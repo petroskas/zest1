@@ -411,7 +411,7 @@
     <div class="reveal">
       <h2>Your gift changes a life</h2>
       <p>Help us fund awareness training, career guidance and support for people living with epilepsy across Zimbabwe.</p>
-      <p class="eco">For support and sponsorship dial <b>*153*2*2*056028#</b> (EcoCash) or WhatsApp <a href="https://wa.me/263784582491"><b>+263 784 582 491</b></a>.</p>
+      <p class="eco">For support and sponsorship dial <b>*153*2*2*056028#</b> (EcoCash) or WhatsApp <a href="https://wa.me/263784582491"><b>+263 784 582 491</b></a>. This static website cannot process payments or store pledges.</p>
     </div>
     <div class="donate-box reveal">
       <div class="amounts" id="amounts">
@@ -421,7 +421,7 @@
       <input type="text" id="dName" placeholder="Your name (optional)" aria-label="Your name" maxlength="120">
       <input type="text" id="dPhone" placeholder="Phone / WhatsApp (optional)" aria-label="Phone" maxlength="40">
       <button class="btn btn-gold wide" id="giveBtn" type="button">Pledge $10</button>
-      <p class="small" id="giveMsg">Pledge your gift here, then complete it via EcoCash <b>*153*2*2*056028#</b>. We'll be in touch to confirm.</p>
+      <p class="small" id="giveMsg">Choose an amount, then complete your donation via EcoCash <b>*153*2*2*056028#</b>. Use WhatsApp to notify ZEST if you would like a reply.</p>
     </div>
   </div>
 </section>
@@ -452,7 +452,7 @@
         <li>📍 Address: 11903 First Street, Norton, Zimbabwe</li>
       </ul>
     </div>
-    <form class="form reveal" id="contactForm" action="api/contact.php" method="post" novalidate>
+    <form class="form reveal" id="contactForm" novalidate>
       <label>Name<input name="name" required maxlength="120" autocomplete="name"></label>
       <label>Email<input type="email" name="email" required maxlength="190" autocomplete="email"></label>
       <label>Phone / WhatsApp (optional)<input type="tel" name="phone" maxlength="40" autocomplete="tel"></label>
@@ -468,7 +468,6 @@
         </select>
       </label>
       <label>Message<textarea name="msg" rows="4" required maxlength="3000"></textarea></label>
-      <input type="text" name="website" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
       <button class="btn btn-primary" type="submit">Send message</button>
       <p id="formMsg" role="status"></p>
     </form>

@@ -93,48 +93,61 @@
   // Donate
   let amt = 10; const give = $('#giveBtn'), cust = $('#custom');
   $$('#amounts button').forEach(b => b.onclick = () => { $$('#amounts button').forEach(x => x.classList.toggle('on', x === b)); amt = +b.dataset.a; cust.value = ''; give.textContent = 'Pledge $' + amt; });
-  cust.oninput = () => { if (+cust.value > 0) { amt = +cust.value; $$('#amounts button').forEach(x => x.classList.remove('on')); give.textContent = 'Pledge $' + amt; } };
-  // Helper: POST JSON to the PHP/MySQL API
-  const send = async (url, data) => {
-    const r = await fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) });
-    let j = {}; try { j = await r.json(); } catch (e) {}
-    if (!r.ok || !j.ok) throw new Error(j.error || 'Server error');
-    return j;
+  cust.oninput = () => {
+    if (+cust.value > 0) { amt = +cust.value; $$('#amounts button').forEach(x => x.classList.remove('on')); }
+    else if (!cust.value) amt = +($('#amounts button.on')?.dataset.a || 10);
+    give.textContent = 'Pledge $' + amt;
   };
-  const offline = location.protocol === 'file:';
+  const addActionLink = (container, text, href, label) => {
+    const link = document.createElement('a');
+    link.href = href;
+    link.textContent = label;
+    link.className = 'btn btn-primary';
+    link.style.margin = '8px 8px 0 0';
+    container.append(document.createTextNode(text), link);
+  };
 
-  give.onclick = async () => {
-    const m = $('#giveMsg'); give.disabled = true;
-    try {
-      if (offline) throw new Error('offline');
-      await send('api/donate.php', { amount: amt, name: $('#dName').value, phone: $('#dPhone').value });
-      m.textContent = `Thank you! Your $${amt} pledge is recorded. Complete it via EcoCash *153*2*2*056028# and we'll confirm.`;
-    } catch (err) {
-      m.textContent = offline ? 'Open the site through XAMPP (http://localhost/zest/) so pledges can be saved. To give now, dial *153*2*2*056028#.' : 'Sorry, we could not save your pledge. Please try again or dial *153*2*2*056028#.';
+  give.onclick = () => {
+    const message = $('#giveMsg');
+    const customAmount = cust.value.trim() ? Number(cust.value) : amt;
+    message.replaceChildren();
+    if (!Number.isFinite(customAmount) || customAmount < 1 || customAmount > 100000) {
+      message.textContent = 'Enter a donation amount between $1 and $100,000.';
+      return;
     }
-    give.disabled = false;
+
+    amt = Math.round(customAmount * 100) / 100;
+    const name = $('#dName').value.trim();
+    const phone = $('#dPhone').value.trim();
+    const text = `Hello ZEST, I would like to donate $${amt}.${name ? ` My name is ${name}.` : ''}${phone ? ` My phone number is ${phone}.` : ''} I will complete the donation via EcoCash.`;
+    message.textContent = `To donate $${amt}, dial EcoCash *153*2*2*056028#. GitHub Pages cannot record pledges, so use WhatsApp to notify ZEST if you would like a reply. `;
+    addActionLink(message, ' ', `https://wa.me/263784582491?text=${encodeURIComponent(text)}`, 'Notify ZEST on WhatsApp');
   };
 
   // Pre-select enquiry type from "Volunteer / Hire / Book training" links
   $$('[data-enquiry]').forEach(a => a.addEventListener('click', () => { const sel = $('#enquiryType'); if (sel) sel.value = a.dataset.enquiry; }));
 
-  // Contact form: validate, then save to MySQL through api/contact.php
-  $('#contactForm').onsubmit = async e => {
+  // GitHub Pages is static, so offer email and WhatsApp instead of a server-side form.
+  $('#contactForm').onsubmit = e => {
     e.preventDefault(); const f = e.target; let ok = true;
     ['name', 'email', 'msg'].forEach(n => { const el = f[n]; const bad = !el.value.trim() || (n === 'email' && !/^\S+@\S+\.\S+$/.test(el.value)); el.classList.toggle('err', bad); if (bad) ok = false; });
-    const m = $('#formMsg'), btn = f.querySelector('button[type=submit]');
+    const m = $('#formMsg');
+    m.replaceChildren();
     m.className = ''; m.style.color = ok ? 'var(--green)' : 'var(--red)';
     if (!ok) { m.textContent = 'Please complete all fields with a valid email.'; return; }
-    btn.disabled = true; m.textContent = 'Sending…';
-    try {
-      if (offline) throw new Error('offline');
-      await send('api/contact.php', { name: f.name.value, email: f.email.value, phone: f.phone.value, type: f.type.value, msg: f.msg.value, website: f.website.value });
-      m.textContent = 'Thank you – your message has been received. We will reply soon.'; f.reset();
-    } catch (err) {
-      m.style.color = 'var(--red)';
-      m.textContent = offline ? 'Open the site through XAMPP (http://localhost/zest/) so messages can be saved. Or WhatsApp +263 784 582 491.' : 'Sorry, we could not send your message. Please try again or WhatsApp +263 784 582 491.';
-    }
-    btn.disabled = false;
+    const name = f.elements.name.value.trim();
+    const email = f.elements.email.value.trim();
+    const phone = f.elements.phone.value.trim();
+    const type = f.elements.type.selectedOptions[0].text;
+    const message = f.elements.msg.value.trim();
+    const body = `Name: ${name}\nEmail: ${email}\nPhone: ${phone || 'Not provided'}\nContacting as: ${type}\n\n${message}`;
+    const subject = `ZEST website enquiry: ${type}`;
+    const whatsapp = `Hello ZEST, I'm ${name} (${email})${phone ? `, phone ${phone}` : ''}. I'm contacting as: ${type}.\n\n${message}`;
+
+    m.style.color = 'var(--green)';
+    m.append(document.createTextNode('Choose how to send your message. Email opens a draft for you to review and send; WhatsApp opens a chat. GitHub Pages does not store or send form submissions. '));
+    addActionLink(m, ' ', `mailto:zimbabweepilepsysurvivorstrust@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`, 'Open email draft');
+    addActionLink(m, ' ', `https://wa.me/263784582491?text=${encodeURIComponent(whatsapp)}`, 'Open WhatsApp');
   };
 
   // Campaign poster filters (All / 2026 / 2025 / Other)
