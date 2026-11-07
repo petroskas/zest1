@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ZEST – Zimbabwe Epilepsy Survivors Trust</title>
+<meta name="description" content="Zimbabwe Epilepsy Survivors Trust (ZEST): information, support and advocacy for people living with epilepsy in Zimbabwe.">
+<meta name="theme-color" content="#4b2a9c">
+<meta property="og:type" content="website">
+<meta property="og:title" content="ZEST – Zimbabwe Epilepsy Survivors Trust">
+<meta property="og:description" content="Empowering Survivors, Ending Stigma, Sparking Hope. Advocate · Educate · Motivate.">
+<meta property="og:image" content="images/og-image.png">
+<link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32.png">
+<link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/inclusive.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<!-- Utility bar -->
+<div class="utility">
+  <div class="wrap utility-in">
+    <span>📞 Call / WhatsApp: <a href="tel:+263784582491"><strong>+263 784 582 491</strong></a> · <a href="mailto:zimbabweepilepsysurvivorstrust@gmail.com">zimbabweepilepsysurvivorstrust@gmail.com</a></span>
+    <nav aria-label="Utility">
+      <a href="#contact">Contact</a>
+      <a href="#news">News</a>
+      <button id="themeBtn" aria-label="Toggle dark mode">🌓</button>
+    </nav>
+  </div>
+</div>
+
+<!-- Header -->
+<header class="site-header" id="top">
+  <div class="wrap head-in">
+    <a href="#top" class="brand" aria-label="ZEST home">
+      <img src="images/logo.png" alt="ZEST logo" class="brand-logo" onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'brand-mark',textContent:'Z'}))">
+      <span class="brand-text"><b>ZEST</b><small>Advocate · Educate · Motivate</small></span>
+    </a>
+    <button class="burger" id="burger" aria-label="Menu" aria-expanded="false"><span></span><span></span><span></span></button>
+    <nav class="main-nav" id="mainNav" aria-label="Main">
+      <ul>
+        <li class="has-sub"><a href="#about">About epilepsy ▾</a>
+          <div class="sub">
+            <a href="#firstaid">Seizure first aid</a>
+            <a href="#myths">Myths &amp; facts</a>
+            <a href="#resources">Learning resources</a>
+            <a href="#about">What is epilepsy?</a>
+          </div></li>
+        <li class="has-sub"><a href="#services">Get support ▾</a>
+          <div class="sub">
+            <a href="#services">Our services</a>
+            <a href="#stories">Our message</a>
+            <a href="#contact">Talk to us</a>
+          </div></li>
+        <li><a href="#types">Seizure types</a></li>
+        <li><a href="#meet">Video meeting</a></li>
+        <li><a href="#impact">Our impact</a></li>
+        <li><a href="#campaigns">Campaigns</a></li>
+        <li><a href="#involved">Get involved</a></li>
+        <li><a href="#news">News</a></li>
+        <li><a class="btn btn-gold" href="#donate">Donate</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+
+<!-- Hero -->
+<section class="hero">
+  <canvas id="eeg" aria-hidden="true"></canvas>
+  <div class="wrap hero-in">
+    <div class="hero-copy reveal">
+      <p class="eyebrow">Zimbabwe Epilepsy Survivors Trust</p>
+      <h1>Epilepsy is a condition,<br><span class="grad">not a curse.</span></h1>
+      <p class="lead">Empowering survivors, ending stigma, sparking hope. We stand with people living with epilepsy, their families and communities across Zimbabwe — through education, support and a louder voice.</p>
+      <form class="hero-search" role="search" id="searchForm">
+        <input type="search" id="searchInput" placeholder="Search: first aid, treatment, school, work…" aria-label="Search the site">
+        <button class="btn btn-gold" type="submit">Search</button>
+      </form>
+      <p id="searchMsg" class="search-msg" role="status"></p>
+    </div>
+    <div class="hero-visual reveal">
+      <div class="hero-logo"><img src="images/hero-logo.png" alt="Zimbabwe Epilepsy Survivors Trust logo: Advocate, Educate and Motivate" width="600" height="600"></div>
+      <div class="float-card c1"><b>Seizure?</b><span>Stay calm. Time it. Protect the head.</span></div>
+      <div class="float-card c2"><b>1 in 26</b><span>people will develop epilepsy in their lifetime*</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- Quick help cards -->
+<section class="quick wrap">
+  <a class="qcard reveal" href="#firstaid"><span class="ico">🩺</span><h3>I'm seeing a seizure</h3><p>Step-by-step first aid.</p></a>
+  <a class="qcard reveal" href="#about"><span class="ico">💡</span><h3>I'm newly diagnosed</h3><p>Understand epilepsy and what's next.</p></a>
+  <a class="qcard reveal" href="#services"><span class="ico">🤝</span><h3>I need support</h3><p>Counselling, groups &amp; advocacy.</p></a>
+  <a class="qcard reveal" href="#involved"><span class="ico">📣</span><h3>I want to help</h3><p>Volunteer, fundraise, speak up.</p></a>
+</section>
+
+<!-- About -->
+<section class="section" id="about">
+  <div class="wrap split">
+    <div class="photo-slot tall reveal">
+      <img src="images/about.jpg" alt="A ZEST participant receiving a certificate at a St Daniels training session" onerror="this.remove()">
+      <span class="slot-hint">Add <code>images/about.jpg</code></span>
+    </div>
+    <div class="reveal">
+      <p class="eyebrow dark">About epilepsy</p>
+      <h2>A neurological condition. Anyone can have it.</h2>
+      <p>Epilepsy is a medical condition that affects the brain and causes repeated seizures. Seizures happen when there is a sudden burst of electrical activity in the brain. It is <strong>not contagious</strong>, <strong>not caused by witchcraft</strong>, and for many people it is <strong>well controlled with treatment</strong>.</p>
+      <p>The Zimbabwe Epilepsy Survivors Trust is run by and for people with lived experience. Together with partners such as <strong>St Daniels Rehabilitation &amp; Vocational Training Centre</strong>, we replace fear and stigma with knowledge, dignity, skills and access to care — because <strong>lives matter and potential is real</strong>.</p>
+      <div class="truth" id="truth"><p><b>Myth corrected:</b> Epilepsy is a <b>neurological condition</b> of the brain, not a curse, not witchcraft and not contagious. <b>Seizures</b> are short episodes of sudden, abnormal electrical activity in the brain that can change movement, awareness, sensation or behaviour. Having one seizure does not always mean epilepsy; epilepsy is diagnosed when seizures keep recurring.</p><button class="btn btn-gold" data-read="#truth">🔊 Read this aloud</button></div>
+      <ul class="ticks">
+        <li>Run by survivors and families</li>
+        <li>Career guidance, education and peer networking</li>
+        <li>Disability awareness &amp; epilepsy aid training</li>
+        <li>Advocacy for inclusion, treatment access and rights</li>
+        <li>A member of Epilepsy Alliance Africa</li>
+      </ul>
+      <a class="btn btn-primary" href="#myths">Myths &amp; facts →</a>
+    </div>
+  </div>
+</section>
+
+
+<!-- Seizure types -->
+<section class="section" id="types"><div class="wrap">
+<div class="center reveal"><p class="eyebrow dark">Know the signs</p><h2>Common seizure types and what they look like</h2><p>Seizures are not all “falling and shaking”. Tap <b>Watch demo</b> to see a calm, non-flashing illustration.</p></div>
+<div class="types">
+<article class="tcard"><small>Whole brain</small><h3>Tonic-clonic (convulsive)</h3><ul><li>Body stiffens, then jerks rhythmically</li><li>Loss of awareness, may cry out or lose bladder control</li><li>Usually 1–3 minutes; deep tiredness afterwards</li></ul><button class="btn btn-primary" data-demo="tc">Watch demo</button></article>
+<article class="tcard"><small>Whole brain</small><h3>Absence</h3><ul><li>Blank stare, fluttering eyelids, “switching off”</li><li>Lasts 5–20 seconds, no fall; common in children</li><li>Often mistaken for daydreaming</li></ul><button class="btn btn-primary" data-demo="ab">Watch demo</button></article>
+<article class="tcard"><small>One area of the brain</small><h3>Focal aware / impaired awareness</h3><ul><li>Twitching of one arm or face, odd smells, déjà vu, fear</li><li>Impaired: confused, lip-smacking, fumbling, wandering</li><li>Can spread to a convulsive seizure</li></ul><button class="btn btn-primary" data-demo="fa">Watch demo</button></article>
+<article class="tcard"><small>Whole brain</small><h3>Myoclonic</h3><ul><li>Sudden, brief jerks of arms, legs or body</li><li>Person stays aware; often on waking</li><li>May make people drop things</li></ul><button class="btn btn-primary" data-demo="my">Watch demo</button></article>
+<article class="tcard"><small>Whole brain</small><h3>Atonic (“drop attacks”)</h3><ul><li>Sudden loss of muscle tone; head drops or person falls</li><li>Very brief, recovers quickly</li><li>High injury risk, so a helmet may be advised</li></ul><button class="btn btn-primary" data-demo="at">Watch demo</button></article>
+<article class="tcard"><small>Whole brain</small><h3>Tonic</h3><ul><li>Sudden stiffening of muscles, often in sleep</li><li>Usually under a minute</li><li>May cause a fall if standing</li></ul><button class="btn btn-primary" data-demo="to">Watch demo</button></article>
+</div>
+<div class="demo reveal"><svg id="stage" viewBox="0 0 300 260" role="img" aria-label="Animated illustration of a person during a seizure"><g id="fig"><circle cx="150" cy="70" r="26" fill="#ffb400"/><circle id="eye1" cx="141" cy="66" r="3" fill="#1b1736"/><circle cx="159" cy="66" r="3" fill="#1b1736"/><rect x="120" y="100" width="60" height="90" rx="22" fill="#7b4dff"/><g id="arm"><rect x="176" y="104" width="16" height="64" rx="8" fill="#ffb400"/></g><g id="arm2"><rect x="108" y="104" width="16" height="64" rx="8" fill="#ffb400"/></g><rect x="126" y="186" width="20" height="56" rx="9" fill="#4b2a9c"/><rect x="154" y="186" width="20" height="56" rx="9" fill="#4b2a9c"/></g></svg>
+<div><h3 id="demoTitle">Choose a seizure type</h3><p id="demoText" aria-live="polite">Select a type below to see how it appears and what a bystander should do.</p>
+<div class="demo-tabs" id="demoTabs"><button data-demo="tc">Tonic-clonic</button><button data-demo="ab">Absence</button><button data-demo="fa">Focal</button><button data-demo="my">Myoclonic</button><button data-demo="at">Atonic</button><button data-demo="to">Tonic</button></div>
+<button class="btn btn-gold" id="demoRead">🔊 Read aloud</button><p class="calm">Safe viewing: this demo never flashes. Motion stops if “Stop animations” is on.</p></div></div>
+</div></section>
+
+<!-- Learn -->
+<section class="section tint" id="learn"><div class="wrap">
+<div class="center reveal"><p class="eyebrow dark">Education</p><h2>Causes, triggers, healthy habits and safety everywhere</h2></div>
+<div class="ltabs" role="tablist" id="ltabs"><button class="on" data-l="0">Causes</button><button data-l="1">Triggers</button><button data-l="2">Healthy habits</button><button data-l="3">At home</button><button data-l="4">At school</button><button data-l="5">At work</button><button data-l="6">In public</button></div>
+<div class="lpanel on"><h3>What causes epilepsy?</h3><ul><li>Head injury, including birth injury or lack of oxygen at birth</li><li>Brain infections: meningitis, cerebral malaria, neurocysticercosis (pork tapeworm)</li><li>Stroke, brain tumour, or other brain damage</li><li>Genetic and developmental conditions; family history</li><li>In about half of people, no clear cause is found</li></ul></div>
+<div class="lpanel"><h3>Common seizure triggers</h3><ul><li>Missed medication (the most common cause of breakthrough seizures)</li><li>Lack of sleep and exhaustion</li><li>Stress, strong emotions, illness or fever</li><li>Alcohol, drugs and withdrawal</li><li>Flashing lights (only some people, “photosensitive epilepsy”)</li><li>Missed meals, dehydration; hormonal changes for some women</li></ul><p class="calm">Triggers differ for each person. A diary helps find yours (see the Seizure diary below).</p></div>
+<div class="lpanel"><h3>Habits that support seizure control</h3><ul><li>Take medicine at the same time every day; never stop suddenly</li><li>Sleep 7–9 hours and keep regular hours</li><li>Eat regular meals and drink water</li><li>Manage stress: talk, pray, walk, breathe</li><li>Avoid alcohol and drugs; attend clinic reviews</li><li>Never swim, cook on open fire or climb alone unless a doctor says it is safe</li></ul></div>
+<div class="lpanel"><h3>Seizure at home</h3><ul><li>Cushion the head, clear hard objects, time it</li><li>Keep cooking fires and boiling water away from the person; use raised cooking stands where possible</li><li>Prefer showers to baths; keep bathroom doors unlocked</li><li>Family members should learn first aid and keep medicine visible</li></ul></div>
+<div class="lpanel"><h3>Seizure at school</h3><ul><li>Teachers: stay, time it, protect the head, turn on the side after shaking</li><li>Do not send the child home alone; let them rest afterwards</li><li>Share a care plan with the school; classmates should be taught it is not contagious</li><li>Allow catch-up on missed lessons and exams</li></ul></div>
+<div class="lpanel"><h3>Seizure at work</h3><ul><li>Employers: know first aid, keep a calm space to rest</li><li>Guard people away from machines, heights and heat during a seizure</li><li>Colleagues should not restrain or give food or drink until fully alert</li><li>Epilepsy is not a reason for dismissal: make reasonable adjustments</li></ul></div>
+<div class="lpanel"><h3>Seizure in public</h3><ul><li>Move the crowd back; ask someone to call for help if needed</li><li>Keep away from roads, water, crowds and sharp objects</li><li>Do not give food, drink or tablets until fully awake</li><li>Call an ambulance if over 5 minutes, repeated, injured, or first seizure</li><li>Stay until the person is fully alert; speak kindly</li></ul></div>
+<p class="small center">General education based on guidance from WHO, ILAE and epilepsy foundations. Not medical advice.</p>
+</div></section>
+
+<!-- Tools -->
+<section class="section" id="tools"><div class="wrap">
+<div class="center reveal"><p class="eyebrow dark">Useful tools</p><h2>Seizure diary and medicine reminder</h2><p>Stored privately on your own device only.</p></div>
+<div class="meet"><div class="box"><h3>Seizure diary</h3><form id="diaryForm"><input type="date" id="dDate" aria-label="Date" required><select id="dType" aria-label="Type"><option>Tonic-clonic</option><option>Absence</option><option>Focal</option><option>Myoclonic</option><option>Atonic</option><option>Tonic</option></select><input id="dTrig" placeholder="Possible trigger (sleep, missed dose…)" maxlength="80"><button class="btn btn-primary">Save entry</button></form><ul id="diaryList"></ul><button class="btn btn-ghost" id="diaryDl">Download my diary (CSV)</button></div>
+<div class="box"><h3>Medicine reminder</h3><input type="time" id="medTime" aria-label="Time"><button class="btn btn-primary" id="medSet">Remind me daily</button><p class="small" id="medMsg" role="status">Works while this page is open. Allow notifications when asked.</p></div></div>
+</div></section>
+
+<!-- Meet -->
+<section class="section tint" id="meet"><div class="wrap">
+<div class="center reveal"><p class="eyebrow dark">Video support</p><h2>Meet with ZEST online</h2><p>Support groups, counselling and awareness training, anywhere in Zimbabwe.</p></div>
+<div class="meet"><div class="box"><h3>Google Meet</h3><p class="small">Start a new meeting or join one with its code.</p><a class="btn btn-primary" href="https://meet.new" target="_blank" rel="noopener">Host a new Google Meet</a>
+<input id="meetCode" placeholder="Code e.g. abc-defg-hij" aria-label="Meeting code"><button class="btn btn-gold" id="meetJoin">Join meeting</button>
+<hr><h3>Book a session</h3><p class="small">Pick a time and we will email you the Meet link.</p><a class="btn btn-ghost" href="#contact" data-enquiry="training">Request a session</a>
+<a class="btn btn-ghost" id="calLink" target="_blank" rel="noopener" href="#">Add to Google Calendar</a></div>
+<div class="box"><h3>Open ZEST room (no account needed)</h3><p class="small">Free in-page video room for quick group chats.</p><button class="btn btn-primary" id="jitsiBtn">Start video room</button><div id="jitsi" hidden></div></div></div>
+</div></section>
+
+<!-- First aid -->
+<section class="section tint" id="firstaid">
+  <div class="wrap">
+    <div class="center reveal">
+      <p class="eyebrow dark">Seizure first aid</p>
+      <h2>Stay. Safe. Side.</h2>
+      <p>What to do when someone has a seizure.</p>
+    </div>
+    <div class="aid reveal">
+      <div class="aid-tabs" role="tablist">
+        <button role="tab" class="on" data-t="0">Convulsive seizure</button>
+        <button role="tab" data-t="1">Absence / blank stare</button>
+        <button role="tab" data-t="2">Call an ambulance</button>
+      </div>
+      <div class="aid-panel on" role="tabpanel">
+        <ol class="steps">
+          <li><b>STAY</b> with the person, stay calm and time the seizure.</li>
+          <li><b>SAFE</b> – keep them safe by clearing sharp or hard objects away.</li>
+          <li><b>Cushion the head</b> with something soft.</li>
+          <li><b>Do NOT restrain them</b> and <b>do NOT put anything in their mouth.</b></li>
+          <li><b>SIDE</b> – once it is safe and shaking stops, gently turn them onto their side.</li>
+          <li><b>Stay with them</b> until fully alert; speak gently.</li>
+        </ol>
+      </div>
+      <div class="aid-panel" role="tabpanel">
+        <ol class="steps">
+          <li><b>Stay with the person</b> and speak calmly.</li>
+          <li><b>Guide them away from danger</b> (roads, water, heat).</li>
+          <li><b>Don't restrain</b> them or shout.</li>
+          <li><b>Reassure</b> them as they come round; explain what happened.</li>
+        </ol>
+      </div>
+      <div class="aid-panel" role="tabpanel">
+        <ul class="steps alert">
+          <li>A seizure lasts <b>longer than 5 minutes</b></li>
+          <li>One seizure follows another without recovery</li>
+          <li>The person is injured, pregnant, or has trouble breathing</li>
+          <li>It is their <b>first ever</b> seizure</li>
+        </ul>
+        <p class="note">Get to the nearest clinic or hospital as soon as possible.</p>
+      </div>
+      <div class="timer">
+        <div class="timer-num" id="tnum">00:00</div>
+        <div class="timer-btns">
+          <button class="btn btn-primary" id="tstart">Start seizure timer</button>
+          <button class="btn btn-ghost" id="treset">Reset</button>
+        </div>
+        <p id="tmsg" class="tmsg"></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Myths -->
+<section class="section" id="myths">
+  <div class="wrap">
+    <div class="center reveal">
+      <p class="eyebrow dark">Myths &amp; facts</p>
+      <h2>Tap a card to find the truth</h2>
+    </div>
+    <div class="flips">
+      <button class="flip reveal"><span class="f-in"><span class="f-front"><small>MYTH</small>Epilepsy is caused by witchcraft or a curse.</span><span class="f-back"><small>FACT</small>Epilepsy is a medical condition of the brain. It can be treated.</span></span></button>
+      <button class="flip reveal"><span class="f-in"><span class="f-front"><small>MYTH</small>You can catch epilepsy by touching someone having a seizure.</span><span class="f-back"><small>FACT</small>It is not contagious. Helping safely is always right.</span></span></button>
+      <button class="flip reveal"><span class="f-in"><span class="f-front"><small>MYTH</small>People with epilepsy cannot go to school or work.</span><span class="f-back"><small>FACT</small>With support, most people learn, work and raise families.</span></span></button>
+      <button class="flip reveal"><span class="f-in"><span class="f-front"><small>MYTH</small>Put a spoon in the mouth during a seizure.</span><span class="f-back"><small>FACT</small>Never. It can cause injury. Protect the head and time it.</span></span></button>
+    </div>
+  </div>
+</section>
+
+<!-- Resources -->
+<section class="section tint" id="resources">
+  <div class="wrap">
+    <div class="center reveal">
+      <p class="eyebrow dark">Learning resources</p>
+      <h2>Know epilepsy. Know what to do.</h2>
+      <p>Infographics you can read, share and print. Tap one to view it full size.</p>
+    </div>
+    <div class="posters">
+      <button class="poster reveal" data-full="images/resources/seizure-phases.jpg" data-cap="Seizure phases: onset, ictal, postictal and recovery"><img src="images/resources/seizure-phases.jpg" alt="Infographic: the four seizure phases and what you can do in each" loading="lazy"><span>Seizure phases</span></button>
+      <button class="poster reveal" data-full="images/resources/signs-causes-management.jpg" data-cap="Epilepsy: signs, causes and management"><img src="images/resources/signs-causes-management.jpg" alt="Infographic: epilepsy signs, causes, triggers and management" loading="lazy"><span>Signs, causes &amp; management</span></button>
+      <button class="poster reveal" data-full="images/resources/epilepsy-and-cerebral-palsy.jpg" data-cap="Understanding epilepsy and cerebral palsy"><img src="images/resources/epilepsy-and-cerebral-palsy.jpg" alt="Poster: understanding epilepsy and cerebral palsy, myths versus facts and seizure first aid" loading="lazy"><span>Epilepsy &amp; cerebral palsy</span></button>
+      <button class="poster reveal" data-full="images/resources/breakthrough-seizures-shona.jpg" data-cap="Breakthrough seizures (in Shona)"><img src="images/resources/breakthrough-seizures-shona.jpg" alt="Shona-language infographic about breakthrough seizures" loading="lazy"><span>Breakthrough seizures · Shona</span></button>
+      <button class="poster reveal" data-full="images/resources/myths-stereotypes-misconceptions.jpg" data-cap="Epilepsy myths, stereotypes and misconceptions"><img src="images/resources/myths-stereotypes-misconceptions.jpg" alt="Graphic: epilepsy myths, stereotypes and misconceptions" loading="lazy"><span>Myths &amp; stereotypes</span></button>
+      <button class="poster reveal" data-full="images/resources/seizure-treatments.jpg" data-cap="Seizure treatments"><img src="images/resources/seizure-treatments.jpg" alt="Graphic: seizure treatments" loading="lazy"><span>Seizure treatments</span></button>
+    </div>
+    <p class="small">General information, not medical advice. Always consult a health professional.</p>
+  </div>
+</section>
+
+<!-- Services -->
+<section class="section dark-sec" id="services">
+  <div class="wrap">
+    <div class="center reveal">
+      <p class="eyebrow">How we help</p>
+      <h2>Support that meets you where you are</h2>
+    </div>
+    <div class="grid3">
+      <article class="scard reveal"><span class="num">01</span><h3>Career guidance</h3><p>Guidance on work and livelihoods, plus links to employers who hire on ability — <em>“Employ ability, not disability.”</em></p></article>
+      <article class="scard reveal"><span class="num">02</span><h3>Educational assistance</h3><p>Help to access education and opportunities so no one is left behind at school or college.</p></article>
+      <article class="scard reveal"><span class="num">03</span><h3>Peer networking</h3><p>Connect with fellow members living with epilepsy — support, empower, belong.</p></article>
+      <article class="scard reveal"><span class="num">04</span><h3>Advocacy</h3><p>A louder voice for inclusion, access to care and an end to discrimination.</p></article>
+      <article class="scard reveal"><span class="num">05</span><h3>Pre-assessment &amp; motivation</h3><p>Epilepsy pre-assessment and motivation sessions with a specialist.</p></article>
+      <article class="scard reveal"><span class="num">06</span><h3>Disability awareness training</h3><p>Epilepsy aid, sign language and disability awareness for groups, churches, companies and schools. 3 hrs per session, weekdays, physical or online, any city. <a class="tlink" href="#contact" data-enquiry="training">Book training →</a></p></article>
+    </div>
+    <div class="kids reveal">
+      <button class="kids-flyer" data-full="images/posters/childrens-training-sessions.jpg" data-cap="Children's training sessions at ZEST Norton"><img src="images/posters/childrens-training-sessions.jpg" alt="Flyer: ZEST children's training sessions, ages 3 to 14, at ZEST Norton" loading="lazy"></button>
+      <div class="kids-copy">
+        <p class="eyebrow">Children's programme</p>
+        <h3>Empowering children with disabilities</h3>
+        <p>Quality education and tailored support for children aged <b>3–14 years</b>, with training sessions at <b>ZEST Norton</b> (10am–12pm).</p>
+        <ul class="ticks">
+          <li>Individual care and support</li>
+          <li>Sign language training</li>
+          <li>Epilepsy aid and management</li>
+          <li>Inclusive education, sensory play and therapy</li>
+          <li>Social and emotional skills development</li>
+          <li>A safe and loving environment</li>
+        </ul>
+        <p><b>Who can join:</b> children with neuro-related disabilities, deaf children, and children with autism or intellectual disabilities. Parents and guardians are invited.</p>
+        <p><b>Please bring:</b> a disability certificate or letter from a registered hospital describing the child's disability, plus tissues, a blanket, diapers (if needed), hand soap and wet wipes.</p>
+        <a class="btn btn-gold" href="#contact" data-enquiry="training">Enrol a child →</a>
+      </div>
+    </div>
+    <div class="posters flyers">
+      <button class="poster reveal" data-full="images/posters/are-you-a-person-with-epilepsy.jpg" data-cap="Are you a person with epilepsy? You are not alone."><img src="images/posters/are-you-a-person-with-epilepsy.jpg" alt="Flyer: Are you a person with epilepsy? Searching for support? You are not alone, with ZEST services" loading="lazy"><span>Support for people with epilepsy</span></button>
+      <button class="poster reveal" data-full="images/posters/disability-awareness-training.jpg" data-cap="Disability awareness training"><img src="images/posters/disability-awareness-training.jpg" alt="Flyer: disability awareness training, epilepsy aid and sign language" loading="lazy"><span>Disability awareness training</span></button>
+      <button class="poster reveal" data-full="images/posters/employ-ability.jpg" data-cap="Employ ability, not disability"><img src="images/posters/employ-ability.jpg" alt="Flyer: employ ability, not disability. Partner with us today." loading="lazy"><span>Employ ability, not disability</span></button>
+    </div>
+    <p class="center small">Supported by partners including St Daniels Rehabilitation &amp; Vocational Training Centre and Epilepsy Alliance Africa.</p>
+  </div>
+</section>
+
+<!-- Impact -->
+<section class="section" id="impact">
+  <div class="wrap">
+    <div class="center reveal">
+      <p class="eyebrow dark">Our impact</p>
+      <h2>Growing a community of understanding</h2>
+    </div>
+    <div class="stats">
+      <div class="stat reveal"><b data-count="26" data-prefix="1 in ">0</b><span>people will develop epilepsy in their lifetime*</span></div>
+      <div class="stat reveal"><b data-count="5">0</b><span>core support services</span></div>
+      <div class="stat reveal"><b data-count="3" data-suffix=" hrs">0</b><span>per awareness-training session</span></div>
+      <div class="stat reveal"><b data-count="3">0</b><span>national awareness campaigns, Sep–Nov 2026</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- Stories -->
+<section class="section tint" id="stories">
+  <div class="wrap">
+    <div class="center reveal">
+      <p class="eyebrow dark">Our message</p>
+      <h2>What we stand for</h2>
+    </div>
+    <div class="slider reveal" id="slider">
+      <div class="slide on"><blockquote>Lives matter. Potential is real.</blockquote><cite>— ZEST</cite></div>
+      <div class="slide"><blockquote>Employ ability, not disability. Talent has no condition.</blockquote><cite>— ZEST employment campaign</cite></div>
+      <div class="slide"><blockquote>Sign language is a right, inclusion is strength.</blockquote><cite>— Deaf Awareness Month, September 2026</cite></div>
+      <div class="slide"><blockquote>Same people. Brighter tomorrows. A stronger Zimbabwe, together.</blockquote><cite>— ZEST</cite></div>
+      <div class="dots" id="dots"></div>
+    </div>
+  </div>
+</section>
+
+<!-- Get involved -->
+<section class="section" id="involved">
+  <div class="wrap grid3">
+    <a class="icard reveal" href="#contact" data-enquiry="volunteer"><div class="photo-slot sm"><img src="images/volunteer.jpg" alt="Participants holding their training certificates" onerror="this.remove()"></div><h3>Volunteer</h3><p>Give your time and skills to community outreach and awareness training.</p><span>Join us →</span></a>
+    <a class="icard reveal" href="#contact" data-enquiry="employer"><div class="photo-slot sm"><img src="images/partner.jpg" alt="ZEST partners at a stakeholder workshop" onerror="this.remove()"></div><h3>Hire or partner</h3><p>Employers, clinics and schools: access pre-screened, qualified talent in IT, finance, marketing, engineering, education and more.</p><span>Get in touch →</span></a>
+    <a class="icard reveal" href="#donate"><div class="photo-slot sm"><img src="images/fundraise.jpg" alt="Graduates of a ZEST and St Daniels training programme" onerror="this.remove()"></div><h3>Fundraise</h3><p>Sponsor a session, run, bake, give — every dollar moves the mission.</p><span>Start now →</span></a>
+  </div>
+</section>
+
+<!-- Campaigns -->
+<section class="section tint" id="campaigns">
+  <div class="wrap">
+    <div class="center reveal">
+      <p class="eyebrow dark">Campaigns &amp; awareness days</p>
+      <h2>Awareness in action</h2>
+      <p>Posters from our awareness days and campaigns. Tap one to view it full size.</p>
+    </div>
+    <div class="filters reveal" id="campFilters" role="group" aria-label="Filter campaigns">
+      <button class="on" data-f="all">All</button><button data-f="2026">2026</button><button data-f="2025">2025</button><button data-f="other">Other days</button>
+    </div>
+    <div class="posters" id="campPosters">
+      <button class="poster reveal" data-cat="2026" data-full="images/posters/neam-2026.jpg" data-cap="National Epilepsy Awareness Month, November 2026"><img src="images/posters/neam-2026.jpg" alt="Poster: November is National Epilepsy Awareness Month, Where Community Sparks Hope, NEAM 2026" loading="lazy"><span>NEAM 2026 · November</span></button>
+      <button class="poster reveal" data-cat="2026" data-full="images/posters/world-mental-health-day.jpg" data-cap="World Mental Health Day, Saturday 10 October 2026"><img src="images/posters/world-mental-health-day.jpg" alt="Poster: Commemorating World Mental Health Day, Saturday 10 October 2026" loading="lazy"><span>World Mental Health Day · 10 Oct</span></button>
+      <button class="poster reveal" data-cat="2026" data-full="images/posters/deaf-awareness-month.jpg" data-cap="Deaf Awareness Month, September 2026"><img src="images/posters/deaf-awareness-month.jpg" alt="Poster: Deaf Awareness Month, September 2026" loading="lazy"><span>Deaf Awareness Month · Sept 2026</span></button>
+      <button class="poster reveal" data-cat="2026" data-full="images/posters/april-holidays-2026.jpg" data-cap="Happy April holidays 2026: stay seizure-free"><img src="images/posters/april-holidays-2026.jpg" alt="Graphic: Happy April holidays 2026 with tips to stay safe and seizure-free" loading="lazy"><span>April holidays 2026</span></button>
+      <button class="poster reveal" data-cat="2026" data-full="images/posters/purple-day-2026.jpg" data-cap="Purple Day, 26 March 2026"><img src="images/posters/purple-day-2026.jpg" alt="Poster: Purple Day, 26 March 2026, join Zimbabwe Epilepsy Survivors Trust in raising awareness" loading="lazy"><span>Purple Day · 26 March</span></button>
+      <button class="poster reveal" data-cat="2026" data-full="images/posters/international-epilepsy-day-2026.jpg" data-cap="International Epilepsy Day, 9 February 2026"><img src="images/posters/international-epilepsy-day-2026.jpg" alt="Poster: International Epilepsy Day, second Monday of February, 9 February 2026" loading="lazy"><span>International Epilepsy Day · 9 Feb</span></button>
+      <button class="poster reveal" data-cat="2025" data-full="images/posters/day-of-persons-with-disabilities-2025.jpg" data-cap="International Day of Persons with Disabilities, 3 December 2025"><img src="images/posters/day-of-persons-with-disabilities-2025.jpg" alt="Poster: International Day of Persons with Disabilities, 3 December 2025" loading="lazy"><span>Day of Persons with Disabilities · 3 Dec</span></button>
+      <button class="poster reveal" data-cat="2025" data-full="images/posters/epilepsy-stripes-week-2025.jpg" data-cap="Epilepsy Stripes Week, 15–19 September 2025"><img src="images/posters/epilepsy-stripes-week-2025.jpg" alt="Poster: Epilepsy Stripes Week 2025, 15 to 19 September" loading="lazy"><span>Epilepsy Stripes Week · 15–19 Sept</span></button>
+      <button class="poster reveal" data-cat="2025" data-full="images/posters/world-epilepsy-day-2025.jpg" data-cap="World Epilepsy Day, March 2025"><img src="images/posters/world-epilepsy-day-2025.jpg" alt="Poster: World Epilepsy Day, a virtual all-day event" loading="lazy"><span>World Epilepsy Day · March</span></button>
+      <button class="poster reveal" data-cat="2025" data-full="images/posters/world-down-syndrome-day-2025.jpg" data-cap="World Down Syndrome Day, 21 March 2025"><img src="images/posters/world-down-syndrome-day-2025.jpg" alt="Poster: World Down Syndrome Day, 21 March 2025" loading="lazy"><span>World Down Syndrome Day · 21 March</span></button>
+      <button class="poster reveal" data-cat="other" data-full="images/posters/deaf-awareness-month-september.jpg" data-cap="September is Deaf Awareness Month"><img src="images/posters/deaf-awareness-month-september.jpg" alt="Graphic: September Deaf Awareness Month" loading="lazy"><span>Deaf Awareness Month</span></button>
+      <button class="poster reveal" data-cat="other" data-full="images/posters/womens-day.jpg" data-cap="International Women's Day"><img src="images/posters/womens-day.jpg" alt="Graphic: International Women's Day message to women with epilepsy and caregivers" loading="lazy"><span>International Women's Day</span></button>
+      <button class="poster reveal" data-cat="other" data-full="images/posters/fathers-day-with-disabilities.jpg" data-cap="Happy Father's Day to all fathers with disabilities"><img src="images/posters/fathers-day-with-disabilities.jpg" alt="Graphic: Happy Father's Day to all fathers with disabilities" loading="lazy"><span>Father's Day · fathers with disabilities</span></button>
+      <button class="poster reveal" data-cat="other" data-full="images/posters/fathers-day-with-epilepsy.jpg" data-cap="Happy Father's Day to all fathers with epilepsy"><img src="images/posters/fathers-day-with-epilepsy.jpg" alt="Graphic: Happy Father's Day to all fathers with epilepsy" loading="lazy"><span>Father's Day · fathers with epilepsy</span></button>
+      <button class="poster reveal" data-cat="other" data-full="images/posters/message-of-hope.jpg" data-cap="A message of hope to every epilepsy warrior"><img src="images/posters/message-of-hope.jpg" alt="Graphic: a message of hope to epilepsy warriors from Zimbabwe Epilepsy Survivors Trust" loading="lazy"><span>A message of hope</span></button>
+    </div>
+  </div>
+</section>
+
+<!-- Gallery -->
+<section class="section" id="gallery">
+  <div class="wrap">
+    <div class="center reveal">
+      <p class="eyebrow dark">Gallery</p>
+      <h2>In the community</h2>
+      <p>Workshops, stakeholder meetings and certificate presentations with our partners.</p>
+    </div>
+    <div class="gallery">
+      <button class="g reveal" data-full="images/gallery/workshop-1.jpg" data-cap="Stakeholder workshop"><img src="images/gallery/workshop-1.jpg" alt="Participants around a long table at a stakeholder workshop" loading="lazy"></button>
+      <button class="g reveal" data-full="images/gallery/group-outdoors.jpg" data-cap="Partners and members outdoors"><img src="images/gallery/group-outdoors.jpg" alt="ZEST members and partners standing together outdoors" loading="lazy"></button>
+      <button class="g reveal" data-full="images/gallery/certificate-presentation.jpg" data-cap="Certificate presentation"><img src="images/gallery/certificate-presentation.jpg" alt="A participant receiving a certificate" loading="lazy"></button>
+      <button class="g reveal" data-full="images/gallery/team-group.jpg" data-cap="ZEST and St Daniels team"><img src="images/gallery/team-group.jpg" alt="The ZEST and St Daniels team together" loading="lazy"></button>
+      <button class="g reveal" data-full="images/gallery/certificate-group.jpg" data-cap="Certificate recipients"><img src="images/gallery/certificate-group.jpg" alt="A group holding their certificates" loading="lazy"></button>
+      <button class="g reveal" data-full="images/gallery/workshop-2.jpg" data-cap="Workshop session"><img src="images/gallery/workshop-2.jpg" alt="A workshop session in progress" loading="lazy"></button>
+      <button class="g reveal" data-full="images/gallery/workshop-3.jpg" data-cap="Stakeholder workshop"><img src="images/gallery/workshop-3.jpg" alt="Two participants at a stakeholder workshop" loading="lazy"></button>
+      <button class="g reveal" data-full="images/gallery/training-graduates.jpg" data-cap="Training graduates"><img src="images/gallery/training-graduates.jpg" alt="Training graduates holding certificates" loading="lazy"></button>
+    </div>
+  </div>
+</section>
+
+<div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Image viewer" hidden>
+  <button class="lb-close" id="lbClose" aria-label="Close">×</button>
+  <figure><img id="lbImg" alt=""><figcaption id="lbCap"></figcaption></figure>
+</div>
+
+<!-- Donate -->
+<section class="donate" id="donate">
+  <div class="wrap donate-in">
+    <div class="reveal">
+      <h2>Your gift changes a life</h2>
+      <p>Help us fund awareness training, career guidance and support for people living with epilepsy across Zimbabwe.</p>
+      <p class="eco">For support and sponsorship dial <b>*153*2*2*056028#</b> (EcoCash) or WhatsApp <a href="https://wa.me/263784582491"><b>+263 784 582 491</b></a>.</p>
+    </div>
+    <div class="donate-box reveal">
+      <div class="amounts" id="amounts">
+        <button type="button" data-a="5">$5</button><button type="button" data-a="10" class="on">$10</button><button type="button" data-a="25">$25</button><button type="button" data-a="50">$50</button>
+      </div>
+      <input type="number" id="custom" min="1" placeholder="Other amount (USD)" aria-label="Custom amount">
+      <input type="text" id="dName" placeholder="Your name (optional)" aria-label="Your name" maxlength="120">
+      <input type="text" id="dPhone" placeholder="Phone / WhatsApp (optional)" aria-label="Phone" maxlength="40">
+      <button class="btn btn-gold wide" id="giveBtn" type="button">Pledge $10</button>
+      <p class="small" id="giveMsg">Pledge your gift here, then complete it via EcoCash <b>*153*2*2*056028#</b>. We'll be in touch to confirm.</p>
+    </div>
+  </div>
+</section>
+
+<!-- News -->
+<section class="section" id="news">
+  <div class="wrap">
+    <div class="center reveal"><p class="eyebrow dark">Latest</p><h2>News &amp; events</h2></div>
+    <div class="grid3">
+      <a class="ncard reveal" href="#campaigns"><div class="photo-slot sm"><img src="images/news1.jpg" alt="National Epilepsy Awareness Month poster"></div><time>November 2026</time><h3>November is National Epilepsy Awareness Month</h3><p>“Where Community Sparks Hope” — wear purple, share your story and join the network. #NEAM2026</p></a>
+      <a class="ncard reveal" href="#campaigns"><div class="photo-slot sm"><img src="images/news2.jpg" alt="World Mental Health Day poster"></div><time>Saturday 10 October 2026</time><h3>World Mental Health Day</h3><p>With St Daniels, we commemorated the day under the theme “Lived Experience Heard: Real Voices, Real Change”.</p></a>
+      <a class="ncard reveal" href="#campaigns"><div class="photo-slot sm"><img src="images/news3.jpg" alt="Deaf Awareness Month poster"></div><time>September 2026</time><h3>Deaf Awareness Month</h3><p>“Sign language is a right, inclusion is strength” — community inclusion, education and vocational empowerment.</p></a>
+    </div>
+  </div>
+</section>
+
+<!-- Contact -->
+<section class="section tint" id="contact">
+  <div class="wrap split">
+    <div class="reveal">
+      <p class="eyebrow dark">Contact</p>
+      <h2>Talk to us. You're not alone.</h2>
+      <p>Send a message and a member of the ZEST team will reply. We work physically and online, anywhere in Zimbabwe.</p>
+      <ul class="contact-list">
+        <li>📞 Call / WhatsApp: <a href="tel:+263784582491"><b>+263 784 582 491</b></a> (P. Kashiri)</li>
+        <li>☎️ Calls: <a href="tel:+263713989953"><b>+263 713 989 953</b></a> · <a href="tel:+263776652775"><b>+263 776 652 775</b></a></li>
+        <li>✉️ ZEST: <a href="mailto:zimbabweepilepsysurvivorstrust@gmail.com">zimbabweepilepsysurvivorstrust@gmail.com</a></li>
+        <li>📍 Address: 11903 First Street, Norton, Zimbabwe</li>
+      </ul>
+    </div>
+    <form class="form reveal" id="contactForm" action="api/contact.php" method="post" novalidate>
+      <label>Name<input name="name" required maxlength="120" autocomplete="name"></label>
+      <label>Email<input type="email" name="email" required maxlength="190" autocomplete="email"></label>
+      <label>Phone / WhatsApp (optional)<input type="tel" name="phone" maxlength="40" autocomplete="tel"></label>
+      <label>I'm contacting as…
+        <select name="type" id="enquiryType">
+          <option value="person">Person with epilepsy</option>
+          <option value="family">Family / caregiver</option>
+          <option value="professional">Teacher / health worker</option>
+          <option value="employer">Employer / hiring partner</option>
+          <option value="partner">Partner / donor</option>
+          <option value="volunteer">Volunteer</option>
+          <option value="training">Book awareness training</option>
+        </select>
+      </label>
+      <label>Message<textarea name="msg" rows="4" required maxlength="3000"></textarea></label>
+      <input type="text" name="website" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
+      <button class="btn btn-primary" type="submit">Send message</button>
+      <p id="formMsg" role="status"></p>
+    </form>
+  </div>
+</section>
+</main>
+
+<footer class="footer">
+  <div class="wrap foot-grid">
+    <div><b class="foot-brand">ZEST</b><p>Zimbabwe Epilepsy Survivors Trust. Empowering survivors, ending stigma, sparking hope.</p><img class="foot-logo" src="images/logo.png" alt="ZEST logo" width="96" height="96" loading="lazy"></div>
+    <div><h4>Learn</h4><a href="#about">About epilepsy</a><a href="#types">Seizure types</a><a href="#learn">Triggers &amp; safety</a><a href="#meet">Video meeting</a><a href="#firstaid">First aid</a><a href="#myths">Myths &amp; facts</a><a href="#resources">Resources</a><a href="#campaigns">Campaigns</a><a href="#gallery">Gallery</a></div>
+    <div><h4>Support</h4><a href="#services">Services</a><a href="#stories">Our message</a><a href="#contact">Contact</a></div>
+    <div><h4>Reach us</h4><a href="https://wa.me/263784582491">WhatsApp</a><a href="tel:+263713989953">Call</a><a href="mailto:zimbabweepilepsysurvivorstrust@gmail.com">Email</a><span class="foot-addr">11903 First Street, Norton, Zimbabwe</span></div>
+  </div>
+  <div class="wrap"><div class="mapbox"><iframe title="Map: 11903 First Street, Norton, Zimbabwe" loading="lazy" referrerpolicy="no-referrer-when-downgrade" src="https://www.google.com/maps?q=11903+First+Street,+Norton,+Zimbabwe&amp;output=embed"></iframe></div><p><a href="https://www.google.com/maps/dir/?api=1&amp;destination=11903+First+Street,+Norton,+Zimbabwe" target="_blank" rel="noopener">📍 Get directions in Google Maps</a></p></div>
+  <div class="wrap foot-base">
+    <span>© <span id="yr"></span> Zimbabwe Epilepsy Survivors Trust. All rights reserved.</span>
+    <span>*Information is general guidance, not medical advice. Always consult a health professional.</span>
+  </div>
+</footer>
+
+<button class="totop" id="totop" aria-label="Back to top">↑</button>
+<script src="js/main.js"></script>
+<script src="js/inclusive.js"></script>
+</body>
+</html>
