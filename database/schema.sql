@@ -61,7 +61,62 @@ CREATE TABLE IF NOT EXISTS `donation_pledges` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- ---------------------------------------------------------------------
--- 3. Handy view for the team: unanswered messages, newest first
+-- 3. Educational seizure-demonstration dataset and anonymous totals
+--    Includes no patient records or personally identifying information.
+-- ---------------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS `seizure_demos` (
+  `slug`            VARCHAR(2)   NOT NULL,
+  `title`           VARCHAR(120) NOT NULL,
+  `brain_type`      VARCHAR(80)  NOT NULL,
+  `description`     TEXT         NOT NULL,
+  `first_aid`       TEXT         NOT NULL,
+  `animation_class` VARCHAR(12)  NOT NULL,
+  `sort_order`      TINYINT UNSIGNED NOT NULL,
+  PRIMARY KEY (`slug`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS `seizure_demo_stats` (
+  `demo_slug`  VARCHAR(2) NOT NULL,
+  `view_count` BIGINT UNSIGNED NOT NULL DEFAULT 0,
+  PRIMARY KEY (`demo_slug`),
+  CONSTRAINT `fk_seizure_demo_stats_demo`
+    FOREIGN KEY (`demo_slug`) REFERENCES `seizure_demos` (`slug`)
+    ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+INSERT IGNORE INTO `seizure_demos`
+  (`slug`, `title`, `brain_type`, `description`, `first_aid`, `animation_class`, `sort_order`)
+VALUES
+  ('tc', 'Tonic-clonic (convulsive)', 'Whole brain',
+   'The body may stiffen and then jerk rhythmically. The person is not aware of their surroundings.',
+   'Stay and time the seizure. Cushion the head and clear nearby hazards; do not restrain the person or put anything in their mouth. When jerking stops, place them on their side if safe. Call emergency services if it lasts 5 minutes or more, repeats without recovery, or they are injured.',
+   's-tc', 1),
+  ('ab', 'Absence', 'Whole brain',
+   'A brief pause in awareness may look like staring or eyelid fluttering; the person usually resumes what they were doing.',
+   'Stay nearby and calmly guide the person away from immediate hazards. Reassure them when they become responsive; do not shake or restrain them.',
+   's-ab', 2),
+  ('fa', 'Focal aware or impaired awareness', 'One area of the brain',
+   'A person may have unusual sensations or movements in one area, or become confused and less responsive.',
+   'Stay with the person and gently guide them away from hazards. Do not restrain them. Time the episode and seek emergency help if it becomes a convulsive seizure lasting 5 minutes or more, repeats without recovery, or causes injury.',
+   's-fa', 3),
+  ('my', 'Myoclonic', 'Whole brain',
+   'One or more sudden, brief muscle jerks may happen; awareness is often preserved.',
+   'Help the person sit or move to a safer place if needed. Do not hold their limbs. Seek medical advice if these episodes are new or changing.',
+   's-my', 4),
+  ('at', 'Atonic', 'Whole brain',
+   'A sudden loss of muscle tone can cause the head to drop or the person to fall.',
+   'Protect the person from nearby hazards and cushion the head if possible. Check for injury; do not move them if a serious injury is suspected. Call emergency services for injury or breathing concerns.',
+   's-at', 5),
+  ('to', 'Tonic', 'Whole brain',
+   'Muscles suddenly stiffen, sometimes while a person is asleep or standing.',
+   'Move nearby hazards and protect the head without restraining the person. Time the episode. Afterward, check breathing and place them on their side if safe and needed.',
+   's-to', 6);
+
+INSERT IGNORE INTO `seizure_demo_stats` (`demo_slug`, `view_count`)
+  SELECT `slug`, 0 FROM `seizure_demos`;
+
+-- ---------------------------------------------------------------------
+-- 4. Handy view for the team: unanswered messages, newest first
 -- ---------------------------------------------------------------------
 CREATE OR REPLACE VIEW `v_new_messages` AS
   SELECT `id`, `created_at`, `enquiry_type`, `full_name`, `email`, `phone`, `message`
@@ -70,7 +125,7 @@ CREATE OR REPLACE VIEW `v_new_messages` AS
   ORDER  BY `created_at` DESC;
 
 -- ---------------------------------------------------------------------
--- 4. OPTIONAL: a dedicated database user instead of 'root'.
+-- 5. OPTIONAL: a dedicated database user instead of 'root'.
 --    If you use this, set DB_USER / DB_PASS in api/db.php to match.
 --    (Remove the leading -- to run it. Change the password first!)
 -- ---------------------------------------------------------------------

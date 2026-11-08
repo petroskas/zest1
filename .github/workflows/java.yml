@@ -1,0 +1,38 @@
+name: Build Tomcat application
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "**/*.java"
+      - "pom.xml"
+      - ".github/workflows/java.yml"
+  pull_request:
+    paths:
+      - "**/*.java"
+      - "pom.xml"
+      - ".github/workflows/java.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+          cache: maven
+      - name: Build Tomcat WAR
+        run: mvn --batch-mode --no-transfer-progress package
+      - name: Upload WAR artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: zest1-tomcat-war
+          path: target/zest1.war

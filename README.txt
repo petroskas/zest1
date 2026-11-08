@@ -1,40 +1,66 @@
-ZEST WEBSITE – GITHUB PAGES AND LOCAL SETUP
-============================================
-LIVE SITE
-- GitHub Pages deploys this static site automatically when changes are pushed to main.
-- The public site URL is https://petroskas.github.io/zest1/
-- The workflow publishes only index.html, css\, images\ and js\. PHP and database files are not deployed.
-- Contact messages open an email draft or a WhatsApp chat; the visitor must press Send.
-- Donation pledges are not stored and payments are not processed by this website. Complete donations via
-  EcoCash *153*2*2*056028# and use the WhatsApp link to notify ZEST if a reply is wanted.
-- GitHub Pages does not run PHP or MySQL. Do not put passwords, API keys or private data in this repository.
+ZEST WEBSITE - GITHUB PAGES, TOMCAT AND MYSQL
+================================================
 
-LOCAL XAMPP SETUP (OPTIONAL PHP / MYSQL BACKEND)
-1. Copy this whole "zest1" folder to: C:\xampp\htdocs\zest1
-2. Open the XAMPP Control Panel and START Apache and MySQL.
-3. Open http://localhost/phpmyadmin -> Import -> choose database\schema.sql -> Go.
-   (This creates the database "zest_db" with the tables contact_messages and donation_pledges.)
-4. Open http://localhost/zest1/ to browse the site. The GitHub Pages contact and donation flows use email
-   and WhatsApp; the optional PHP endpoints in api\ are not connected to those static forms.
+GITHUB PAGES
+- The public static site is https://petroskas.github.io/zest1/.
+- Pushes to main publish index.html, css\, images\, js\ and data\ using the
+  GitHub Pages workflow.
+- GitHub Pages cannot run Java servlets or MySQL. The educational illustrations
+  and downloadable CSV continue to work there; saving view counts requires the
+  Tomcat application and a configured MySQL database.
+- Contact and donation forms on the public static site open email or WhatsApp.
+  The website does not process payments.
 
-Notes
-- Do NOT open index.html by double-clicking if you need the optional PHP endpoints; use XAMPP.
-- Database login is in api\db.php (XAMPP default: root / no password). Change it before using the PHP API
-  on any server, and never publish real production credentials.
-- Photos, posters and logos are in the images\ folder.
-  Replace any file with a better one using the same name and the site updates.
-- Photos, posters and logos are in the images\ folder.
-  Replace any file with a better one using the same name and the site updates.
+LOCAL WEBSITE (XAMPP PHP)
+1. Copy the project to C:\xampp\htdocs\zest1.
+2. Start Apache and MySQL from the XAMPP Control Panel.
+3. Import database\schema.sql through http://localhost/phpmyadmin.
+4. Open http://localhost/zest1/.
+The optional PHP contact and donation endpoints remain separate from the
+Tomcat demonstration API.
 
-NEW IN THIS VERSION (inclusive update)
-- Accessibility panel (round button bottom-left, or Alt+M): audio mode / auto-read (Alt+A), read page (Alt+R), stop (Alt+S),
-  voice commands, dyslexia font, high contrast, greyscale, invert, text size, line spacing, highlight links, big cursor,
-  reading ruler, stop animations. Settings are remembered.
-- Seizure types with safe, non-flashing animated demos (#types); causes, triggers, habits, home/school/work/public (#learn).
-- Myth-corrected definition of epilepsy and seizures (About section).
-- Seizure diary (CSV download) and daily medicine reminder (#tools) – stored only on the visitor's device.
-- Video support (#meet): host/join Google Meet, Google Calendar link, and a free in-page video room (Jitsi).
-- Live Google Map + directions in the footer (no API key needed).
-- ZEST Assistant chatbot (bottom-right, Alt+C): built-in epilepsy knowledge base + live Wikipedia lookup, voice input.
-- Emergency "Help line" button.
-Note: video, map, Wikipedia and fonts need internet. Information is general education, not medical advice; have a clinician review it.
+TOMCAT 10.1 + JAVA 17+ + MYSQL/MARIADB
+The Tomcat WAR contains the static site and the Java demonstration API.
+
+1. Start MySQL or MariaDB and import database\schema.sql; it creates the
+   zest_db database and seeds six educational demonstrations. The data is not
+   patient information.
+2. Configure database access in Tomcat's bin\setenv.bat. Create this file
+   locally if it does not exist; never commit real passwords:
+
+       set "ZEST_DB_URL=jdbc:mysql://127.0.0.1:3306/zest_db?serverTimezone=UTC"
+       set "ZEST_DB_USER=zest_user"
+       set "ZEST_DB_PASSWORD=YOUR_LOCAL_DATABASE_PASSWORD"
+
+   For a local XAMPP installation, use its configured MySQL username and
+   password. Set a strong, private database password on any public server.
+3. This project uses Jakarta Servlets and requires Tomcat 10.1; Tomcat 9 is not
+   compatible with this WAR. From the project folder build with the installed
+   Maven 3.10.0-rc-1:
+
+       C:\apache-maven-3.10.0-rc-1\bin\mvn.cmd --batch-mode -f C:\xampp\htdocs\zest1\zest1\pom.xml package
+
+4. Copy target\zest1.war into the installed Tomcat 10.1 webapps\ folder, then
+   start or restart Tomcat. For example, with Tomcat installed at
+   C:\apache-tomcat-10.1.59, browse to http://localhost:8080/zest1/.
+5. Test GET http://localhost:8080/zest1/api/demos. Selecting a demonstration
+   sends POST requests to /api/demos/{slug}/views. The database stores only one
+   anonymous aggregate counter per demonstration, not viewer IDs, IP addresses,
+   or personal health information.
+
+DATASET AND DEMONSTRATIONS
+- Download the small, six-row educational dataset from the seizure-types
+  section or open data\seizure-demos.csv.
+- database\schema.sql installs the same records into seizure_demos and creates
+  seizure_demo_stats for aggregate view totals.
+- The site uses its calm, non-flashing SVG illustrations; the CSV and API add
+  demonstrations and first-aid guidance, not unverified video footage.
+- These illustrations and first-aid tips are general education, not diagnosis
+  or a substitute for advice from a qualified health professional.
+
+GITHUB DEPLOYMENT
+- Push commits to main to publish the static site on GitHub Pages.
+- A separate GitHub Actions workflow builds target\zest1.war on Java 17 and
+  makes it available as a workflow artifact. GitHub Pages does not host this
+  WAR; deploy it to Tomcat 10.1 to enable the MySQL API. No server passwords or
+  GitHub Actions secrets are included in the repository.

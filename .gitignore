@@ -3,3 +3,4 @@
 !.env.example
 *.log
 *.sql.gz
+target/

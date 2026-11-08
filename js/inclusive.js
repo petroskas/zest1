@@ -53,8 +53,42 @@ fa:['Focal seizure','Starts in one part of the brain. The person may twitch on o
 my:['Myoclonic seizure','Quick, shock-like jerks. The person usually stays aware. Help them sit safely, and reassure them. Report frequent jerks to their clinic.'],
 at:['Atonic seizure','Muscles suddenly go limp and the person drops. Check for injury, stay with them, and help them up slowly once alert. Call for help if hurt.'],
 to:['Tonic seizure','Muscles suddenly become stiff, often in sleep or causing a fall. Protect the head, stay with them and time it.']};
+const demoStatus=$('#demoStatus');let demoDatasetOnline=false;
+async function loadDemoDataset(){
+ try{
+  const response=await fetch('api/demos',{headers:{Accept:'application/json'}});
+  if(!response.ok)throw new Error('Demo dataset request failed: '+response.status);
+  const records=await response.json();
+  if(!Array.isArray(records)||!records.length)throw new Error('The demo dataset is empty.');
+  const loaded=new Set();
+  records.forEach(record=>{
+   if(!D[record.slug]||typeof record.title!=='string'||typeof record.description!=='string'||typeof record.firstAid!=='string')return;
+   D[record.slug][0]=record.title;
+   D[record.slug][1]=record.description+' First aid: '+record.firstAid;
+   loaded.add(record.slug);
+  });
+  if(loaded.size!==Object.keys(D).length)throw new Error('The demo dataset is incomplete.');
+  demoDatasetOnline=true;
+  demoStatus.textContent='Connected to the MySQL dataset. Selecting a demonstration records an anonymous total view count; no personal health information is collected.';
+ }catch(error){
+  demoStatus.textContent='The Tomcat dataset is unavailable here. The six local, non-flashing illustrations remain available; view counts are not being saved.';
+ }
+}
+loadDemoDataset();
+async function recordDemoView(k){
+ if(!demoDatasetOnline)return;
+ try{
+  const response=await fetch('api/demos/'+encodeURIComponent(k)+'/views',{method:'POST',headers:{Accept:'application/json'}});
+  if(!response.ok)throw new Error('Demo view could not be saved: '+response.status);
+  const result=await response.json();
+  if(!result.ok||!Number.isSafeInteger(result.views))throw new Error('The demo view response was invalid.');
+  demoStatus.textContent='Connected to MySQL. '+(D[k][0])+': '+result.views+' anonymous total views; no personal health information is collected.';
+ }catch(error){
+  demoStatus.textContent='Could not save this demonstration view. The illustration remains available.';
+ }
+}
 function demo(k){const st=$('#stage');st.setAttribute('class','s-'+k);$('#demoTitle').textContent=D[k][0];$('#demoText').textContent=D[k][1];$$('#demoTabs button').forEach(b=>b.classList.toggle('on',b.dataset.demo===k));$('#demoRead').onclick=()=>say(D[k][0]+'. '+D[k][1]);if(S.audio)say(D[k][0]+'. '+D[k][1]);$('#stage').scrollIntoView({block:'nearest'})}
-$$('[data-demo]').forEach(b=>b.onclick=()=>demo(b.dataset.demo));
+$$('[data-demo]').forEach(b=>b.onclick=()=>{demo(b.dataset.demo);recordDemoView(b.dataset.demo)});
 // ---- learn tabs
 const lt=$$('#ltabs button'),lp=$$('.lpanel');lt.forEach(b=>b.onclick=()=>{lt.forEach(x=>x.classList.toggle('on',x===b));lp.forEach((p,i)=>p.classList.toggle('on',i==b.dataset.l));if(S.audio)say(lp[b.dataset.l].textContent)});
 // ---- diary
