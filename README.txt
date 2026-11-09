@@ -44,9 +44,9 @@ DATASET AND DEMONSTRATIONS
 - database\schema.sql installs the same records into seizure_demos and creates
   seizure_demo_stats for aggregate view totals.
 - documents\ contains the supplied Zimbabwe National Disability Policy (2021)
-  and Persons with Disabilities Act (2025), embedded as PDFs in the site's
-  reading-room viewer. The viewer hides PDF toolbar controls where supported;
-  browser PDF controls and save options vary by browser and device.
+  and Persons with Disabilities Act (2025) as responsive, page-by-page HTML
+  document readers embedded in the reading room. The original PDFs are not
+  published, avoiding browser behavior that downloads them instead of opening.
 - Supplied MP4 illustrations appear under their corresponding seizure types.
 - All videos require an explicit play action and use responsive HTML5 controls.
 - Videos and first-aid tips are general education, not diagnosis or a substitute
@@ -55,9 +55,9 @@ DATASET AND DEMONSTRATIONS
 ONLINE READING
 - The disability reading room embeds public source pages where the publishers
   allow it and provides a link to read online if embedding is blocked.
-- Zimbabwe's supplied policy and Act are embedded as PDFs for in-site viewing.
-  PDF toolbar and download behavior depend on the browser; this site cannot
-  guarantee that a browser will prevent saving or printing.
+- Zimbabwe's supplied policy and Act are displayed one page at a time as
+  document-style HTML views. Browser-readable pages avoid requiring Word or a
+  PDF viewer. Text can still be selected, copied or captured in a screenshot.
 
 GITHUB DEPLOYMENT
 - Push commits to main to publish the static site on GitHub Pages.
