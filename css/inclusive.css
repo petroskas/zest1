@@ -23,8 +23,12 @@ body.a-cursor,body.a-cursor *{cursor:url("data:image/svg+xml;utf8,<svg xmlns='ht
 .tcard{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:20px;box-shadow:var(--shadow);text-align:left}
 .tcard h3{font-size:1.2rem}.tcard small{color:var(--p2);font-weight:700;text-transform:uppercase;letter-spacing:.06em}
 .tcard ul{padding-left:18px;margin:8px 0}.tcard .btn{margin-top:6px;padding:8px 16px;font-size:.85rem}
-.demo{display:grid;grid-template-columns:minmax(220px,340px) 1fr;gap:28px;align-items:center;background:var(--card);border:2px solid var(--p);border-radius:var(--r);padding:24px;margin-top:30px}
-.demo svg{width:100%;background:var(--tint);border-radius:16px}
+.demo{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:28px;align-items:center;background:var(--card);border:2px solid var(--p);border-radius:var(--r);padding:24px;margin-top:30px}
+.demo-video-wrap{min-width:0}
+.demo video{display:block;width:100%;height:auto;min-height:300px;max-height:560px;aspect-ratio:16/9;object-fit:contain;background:#100e18;border-radius:16px}
+.demo video[hidden]{display:none}
+.demo-video-fallback{display:grid;place-items:center;min-height:300px;margin:0;padding:24px;border-radius:16px;background:var(--tint);text-align:center;font-weight:700}
+.demo-video-fallback[hidden]{display:none}
 .demo-tabs{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}.demo-tabs button,.ltabs button{padding:8px 14px;border-radius:999px;border:2px solid var(--line);background:var(--tint);font-weight:600}
 .demo-tabs button.on,.ltabs button.on{background:var(--p);color:#fff;border-color:var(--p)}
 .calm{background:#fff6dc;color:#4b3800;border-radius:12px;padding:10px 14px;font-size:.9rem;margin-top:8px}
@@ -33,14 +37,6 @@ body.a-cursor,body.a-cursor *{cursor:url("data:image/svg+xml;utf8,<svg xmlns='ht
 .lpanel ul{padding-left:20px}.lpanel li{margin:6px 0}
 .truth{background:linear-gradient(135deg,var(--p),#2d1a6e);color:#fff;border-radius:var(--r);padding:22px;margin:20px 0}
 .truth b{color:var(--gold)}
-@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-4px)}75%{transform:translateX(4px)}}
-@keyframes jerk{0%,80%,100%{transform:translateY(0)}85%{transform:translateY(-8px)}}
-@keyframes slump{0%,30%{transform:rotate(0)}60%,100%{transform:rotate(38deg) translateY(30px)}}
-@keyframes twitch{0%,100%{transform:rotate(0)}50%{transform:rotate(-24deg)}}
-@keyframes fade{0%,100%{opacity:1}50%{opacity:.35}}
-.s-tc #fig{animation:shake .25s infinite}.s-ab #fig{animation:fade 3s infinite}.s-my #fig{animation:jerk 2s infinite}
-.s-at #fig{animation:slump 3s ease-in infinite alternate;transform-origin:50% 100%}.s-fa #arm{animation:twitch .5s infinite;transform-origin:50% 0}
-.s-to #fig{transform:scaleY(1.04)}.s-to #arm,.s-to #arm2{transform:rotate(-10deg)}
 .meet{display:grid;grid-template-columns:1fr 1fr;gap:24px}.meet .box{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:22px}
 .meet input,.meet select{width:100%;padding:11px;border-radius:10px;border:2px solid var(--line);margin:6px 0;background:var(--bg);color:var(--ink)}
 #jitsi{height:420px;border-radius:14px;overflow:hidden;margin-top:12px;background:#000}
@@ -50,6 +46,10 @@ body.a-cursor,body.a-cursor *{cursor:url("data:image/svg+xml;utf8,<svg xmlns='ht
 #chat[hidden]{display:none}#chat header{background:var(--p);color:#fff;padding:12px 14px;font-weight:700;border-radius:15px 15px 0 0;display:flex;justify-content:space-between}
 #chatLog{flex:1;overflow:auto;padding:12px;display:flex;flex-direction:column;gap:8px}
 .m{padding:9px 12px;border-radius:14px;max-width:88%;font-size:.92rem}.m.u{align-self:flex-end;background:var(--p);color:#fff}.m.b{background:var(--tint)}
+.chat-sources{font-size:.78rem;color:var(--muted);padding:0 10px 8px;overflow-wrap:anywhere}
+.chat-sources a{color:var(--p2);text-decoration:underline}
 #chat form{display:flex;gap:6px;padding:10px;border-top:1px solid var(--line)}#chat input{flex:1;padding:10px;border-radius:10px;border:2px solid var(--line);background:var(--bg);color:var(--ink)}
 #chat form button,#chatMic{border:0;border-radius:10px;background:var(--gold);padding:0 12px;font-weight:700}
 @media(max-width:800px){.demo,.meet{grid-template-columns:1fr}}
+@media(max-width:800px){.demo video,.demo-video-fallback{min-height:240px}}
+@media(max-width:480px){#chat{right:4vw;bottom:200px;width:92vw;height:min(60vh,480px)}#chatFab{right:14px;bottom:140px}}

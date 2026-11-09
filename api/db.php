@@ -3,11 +3,6 @@
  * ZEST – database connection + small helpers.
  * XAMPP defaults: user "root", empty password. Change for any live server.
  */
-const DB_HOST = '127.0.0.1';
-const DB_NAME = 'zest_db';
-const DB_USER = 'root';
-const DB_PASS = '';
-
 header('Content-Type: application/json; charset=utf-8');
 header('X-Content-Type-Options: nosniff');
 
@@ -21,9 +16,13 @@ function db(): PDO {
     static $pdo = null;
     if ($pdo) return $pdo;
     try {
+        $dbHost = getenv('ZEST_DB_HOST') ?: '127.0.0.1';
+        $dbName = getenv('ZEST_DB_NAME') ?: 'zest_db';
+        $dbUser = getenv('ZEST_DB_USER') ?: 'root';
+        $dbPass = getenv('ZEST_DB_PASSWORD') ?: '';
         $pdo = new PDO(
-            'mysql:host=' . DB_HOST . ';dbname=' . DB_NAME . ';charset=utf8mb4',
-            DB_USER, DB_PASS,
+            'mysql:host=' . $dbHost . ';dbname=' . $dbName . ';charset=utf8mb4',
+            $dbUser, $dbPass,
             [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
              PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
              PDO::ATTR_EMULATE_PREPARES => false]
@@ -43,8 +42,8 @@ function input(): array {
     return is_array($data) ? $data : $_POST;
 }
 
-function clean(?string $v, int $max): string {
-    $v = trim((string)$v);
+function clean(mixed $v, int $max): string {
+    $v = is_string($v) ? trim($v) : '';
     $v = preg_replace('/[\x00-\x08\x0B\x0C\x0E-\x1F]/u', '', $v) ?? '';
     return mb_substr($v, 0, $max);
 }

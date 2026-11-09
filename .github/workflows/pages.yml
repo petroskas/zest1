@@ -26,6 +26,8 @@ jobs:
           cp index.html _site/
           cp -R css images js _site/
           cp -R data _site/
+          cp -R seizure-videos _site/
+          cp -R documents _site/
           touch _site/.nojekyll
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3

@@ -174,7 +174,24 @@ cite{display:block;margin-top:18px;color:var(--muted)}
 .form input:focus,.form select:focus,.form textarea:focus{border-color:var(--p2);outline:none}
 .form input.err,.form textarea.err{border-color:var(--red)}
 #formMsg{font-weight:600}
-
+.form-actions{display:flex;flex-wrap:wrap;gap:10px}
+.form-actions[hidden]{display:none}
+.faq-list{max-width:900px;margin:auto}
+.faq-list details{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 20px;margin:12px 0}
+.faq-list summary{cursor:pointer;font-weight:700}
+.faq-list details p{color:var(--muted);margin:12px 0 0}
+.reading-room{display:grid;grid-template-columns:minmax(250px,.8fr) minmax(0,1.2fr);gap:22px;align-items:stretch}
+.reading-list{display:flex;flex-direction:column;align-items:stretch;gap:12px}
+.reading-list .btn{text-align:center}
+.reading-room iframe{width:100%;height:min(75vh,760px);min-height:440px;border:1px solid var(--line);border-radius:16px;background:var(--card)}
+.story-share{display:grid;grid-template-columns:1fr 1.15fr;gap:32px;align-items:start;margin:45px auto 0;max-width:1000px}
+.story-share h3{margin:0 0 12px}
+.story-share>div>p:last-child{color:var(--muted)}
+.story-anon{display:flex!important;grid-template-columns:auto 1fr!important;align-items:center;gap:10px!important}
+.story-anon input{width:20px;height:20px;accent-color:var(--p)}
+.story-consent{display:flex!important;grid-template-columns:auto 1fr!important;align-items:flex-start;gap:10px!important}
+.story-consent input{width:20px;height:20px;flex:0 0 20px;accent-color:var(--p)}
+.story-name[hidden]{display:none!important}
 /* footer */
 .footer{background:#120d2e;color:#bdb5e0;padding:70px 0 0}
 .foot-grid{display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:40px}
@@ -198,6 +215,8 @@ cite{display:block;margin-top:18px;color:var(--muted)}
   .main-nav.open{max-height:80vh;overflow:auto}
   .main-nav ul{flex-direction:column;align-items:stretch;padding:14px 4%}
   .sub{position:static;opacity:1;visibility:visible;transform:none;box-shadow:none;border:0;padding:0 0 0 14px;background:none}
+  .reading-room,.story-share{grid-template-columns:1fr}
+  .reading-room iframe{min-height:360px}
 }
 @media(max-width:600px){
   .quick,.stats,.flips,.grid3,.foot-grid{grid-template-columns:1fr}

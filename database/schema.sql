@@ -116,7 +116,24 @@ INSERT IGNORE INTO `seizure_demo_stats` (`demo_slug`, `view_count`)
   SELECT `slug`, 0 FROM `seizure_demos`;
 
 -- ---------------------------------------------------------------------
--- 4. Handy view for the team: unanswered messages, newest first
+-- 4. Community stories. All submissions wait for review before publication.
+--    Anonymous stories do not store a name, email address, or IP address.
+--    Uploaded images are stored outside the public web root where possible.
+-- ---------------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS `community_stories` (
+  `id`            BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `story`         TEXT NOT NULL,
+  `display_name`  VARCHAR(80) DEFAULT NULL,
+  `is_anonymous`  TINYINT(1) NOT NULL DEFAULT 1,
+  `photo_path`    VARCHAR(255) DEFAULT NULL,
+  `status`        ENUM('pending','approved','rejected') NOT NULL DEFAULT 'pending',
+  `created_at`    TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `idx_story_status_created` (`status`, `created_at`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- ---------------------------------------------------------------------
+-- 5. Handy view for the team: unanswered messages, newest first
 -- ---------------------------------------------------------------------
 CREATE OR REPLACE VIEW `v_new_messages` AS
   SELECT `id`, `created_at`, `enquiry_type`, `full_name`, `email`, `phone`, `message`
@@ -125,7 +142,7 @@ CREATE OR REPLACE VIEW `v_new_messages` AS
   ORDER  BY `created_at` DESC;
 
 -- ---------------------------------------------------------------------
--- 5. OPTIONAL: a dedicated database user instead of 'root'.
+-- 6. OPTIONAL: a dedicated database user instead of 'root'.
 --    If you use this, set DB_USER / DB_PASS in api/db.php to match.
 --    (Remove the leading -- to run it. Change the password first!)
 -- ---------------------------------------------------------------------

@@ -107,10 +107,12 @@
     container.append(document.createTextNode(text), link);
   };
 
-  give.onclick = () => {
+  give.onclick = async () => {
     const message = $('#giveMsg');
+    const actions = $('#donateActions');
     const customAmount = cust.value.trim() ? Number(cust.value) : amt;
-    message.replaceChildren();
+    actions.replaceChildren();
+    actions.hidden = true;
     if (!Number.isFinite(customAmount) || customAmount < 1 || customAmount > 100000) {
       message.textContent = 'Enter a donation amount between $1 and $100,000.';
       return;
@@ -120,21 +122,48 @@
     const name = $('#dName').value.trim();
     const phone = $('#dPhone').value.trim();
     const text = `Hello ZEST, I would like to donate $${amt}.${name ? ` My name is ${name}.` : ''}${phone ? ` My phone number is ${phone}.` : ''} I will complete the donation via EcoCash.`;
-    message.textContent = `To donate $${amt}, dial EcoCash *153*2*2*056028#. GitHub Pages cannot record pledges, so use WhatsApp to notify ZEST if you would like a reply. `;
-    addActionLink(message, ' ', `https://wa.me/263784582491?text=${encodeURIComponent(text)}`, 'Notify ZEST on WhatsApp');
+    give.disabled = true;
+    message.textContent = 'Saving your pledge…';
+    try {
+      const response = await fetch('api/donate.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+        body: JSON.stringify({ amount: amt, name, phone })
+      });
+      if (!response.ok) throw new Error('Could not save this pledge.');
+      const result = await response.json();
+      if (!result.ok) throw new Error(result.error || 'Could not save this pledge.');
+      message.textContent = `Your pledge has been saved. Complete your donation via EcoCash *153*2*2*056028#.`;
+    } catch (error) {
+      message.textContent = `To donate $${amt}, use EcoCash *153*2*2*056028#.`;
+    } finally {
+      give.disabled = false;
+    }
+    actions.hidden = false;
+    addActionLink(actions, '', `https://wa.me/263784582491?text=${encodeURIComponent(text)}`, 'Notify ZEST on WhatsApp');
   };
 
   // Pre-select enquiry type from "Volunteer / Hire / Book training" links
   $$('[data-enquiry]').forEach(a => a.addEventListener('click', () => { const sel = $('#enquiryType'); if (sel) sel.value = a.dataset.enquiry; }));
 
-  // GitHub Pages is static, so offer email and WhatsApp instead of a server-side form.
-  $('#contactForm').onsubmit = e => {
-    e.preventDefault(); const f = e.target; let ok = true;
+  const formActions = (container, email, whatsapp) => {
+    container.replaceChildren();
+    addActionLink(container, '', `mailto:zimbabweepilepsysurvivorstrust@gmail.com?subject=${encodeURIComponent(email.subject)}&body=${encodeURIComponent(email.body)}`, 'Send by email');
+    addActionLink(container, '', `https://wa.me/263784582491?text=${encodeURIComponent(whatsapp)}`, 'Send with WhatsApp');
+    container.hidden = false;
+  };
+
+  $('#contactForm').onsubmit = async e => {
+    e.preventDefault(); const f = e.currentTarget; let ok = true;
     ['name', 'email', 'msg'].forEach(n => { const el = f[n]; const bad = !el.value.trim() || (n === 'email' && !/^\S+@\S+\.\S+$/.test(el.value)); el.classList.toggle('err', bad); if (bad) ok = false; });
     const m = $('#formMsg');
-    m.replaceChildren();
-    m.className = ''; m.style.color = ok ? 'var(--green)' : 'var(--red)';
+    const actions = $('#contactActions');
+    m.textContent = '';
+    actions.replaceChildren();
+    actions.hidden = true;
+    m.className = '';
     if (!ok) { m.textContent = 'Please complete all fields with a valid email.'; return; }
+    if (f.elements.website.value.trim()) return;
     const name = f.elements.name.value.trim();
     const email = f.elements.email.value.trim();
     const phone = f.elements.phone.value.trim();
@@ -143,12 +172,97 @@
     const body = `Name: ${name}\nEmail: ${email}\nPhone: ${phone || 'Not provided'}\nContacting as: ${type}\n\n${message}`;
     const subject = `ZEST website enquiry: ${type}`;
     const whatsapp = `Hello ZEST, I'm ${name} (${email})${phone ? `, phone ${phone}` : ''}. I'm contacting as: ${type}.\n\n${message}`;
-
-    m.style.color = 'var(--green)';
-    m.append(document.createTextNode('Choose how to send your message. Email opens a draft for you to review and send; WhatsApp opens a chat. GitHub Pages does not store or send form submissions. '));
-    addActionLink(m, ' ', `mailto:zimbabweepilepsysurvivorstrust@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`, 'Open email draft');
-    addActionLink(m, ' ', `https://wa.me/263784582491?text=${encodeURIComponent(whatsapp)}`, 'Open WhatsApp');
+    const submit = f.querySelector('[type=submit]');
+    submit.disabled = true;
+    m.textContent = 'Sending…';
+    try {
+      const response = await fetch('api/contact.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+        body: JSON.stringify({ name, email, phone, type: f.elements.type.value, msg: message, website: '' })
+      });
+      if (!response.ok) throw new Error('Contact form could not be saved.');
+      const result = await response.json();
+      if (!result.ok) throw new Error(result.error || 'Contact form could not be saved.');
+      m.textContent = 'Your message has been recorded. Choose how to send it to ZEST:';
+    } catch (error) {
+      m.textContent = 'Choose how to send your message:';
+    } finally {
+      submit.disabled = false;
+    }
+    formActions(actions, { subject, body }, whatsapp);
   };
+
+  const storyForm = $('#storyForm');
+  const anonymousStory = storyForm.elements.anonymous;
+  const storyName = storyForm.elements.display_name;
+  const syncStoryName = () => {
+    storyName.disabled = anonymousStory.checked;
+    storyName.required = !anonymousStory.checked;
+    storyName.closest('label').hidden = anonymousStory.checked;
+  };
+  anonymousStory.addEventListener('change', syncStoryName);
+  syncStoryName();
+  storyForm.elements.photo.addEventListener('change', () => {
+    const file = storyForm.elements.photo.files[0];
+    if (file && file.size > 3 * 1024 * 1024) {
+      storyForm.elements.photo.value = '';
+      $('#storyMsg').textContent = 'Choose an image smaller than 3 MB.';
+    }
+  });
+  storyForm.onsubmit = async e => {
+    e.preventDefault();
+    const status = $('#storyMsg');
+    const actions = $('#storyActions');
+    const submit = storyForm.querySelector('[type=submit]');
+    status.textContent = '';
+    actions.replaceChildren();
+    actions.hidden = true;
+    const story = storyForm.elements.story.value.trim();
+    const photo = storyForm.elements.photo.files[0];
+    if (!story) { status.textContent = 'Please add your story.'; return; }
+    if (!storyForm.elements.consent.checked) { status.textContent = 'Please confirm you have permission to share your story.'; return; }
+    if (photo && photo.size > 3 * 1024 * 1024) { status.textContent = 'Choose an image smaller than 3 MB.'; return; }
+    if (storyForm.elements.website.value.trim()) return;
+    const name = anonymousStory.checked ? '' : storyName.value.trim();
+    const identity = anonymousStory.checked ? 'Shared anonymously' : `Name to display: ${name}`;
+    const body = `${identity}\n\n${story}${photo ? '\n\nI selected a photo to attach.' : ''}`;
+    const subject = 'ZEST community story';
+    const whatsapp = `Hello ZEST. ${identity}.\n\n${story}${photo ? '\n\nI selected a photo to attach.' : ''}`;
+    submit.disabled = true;
+    status.textContent = 'Sending your story for review…';
+    try {
+      const response = await fetch('api/story.php', { method: 'POST', body: new FormData(storyForm) });
+      const result = await response.json();
+      if (!response.ok || !result.ok) throw new Error(result.error || 'Your story could not be saved.');
+      status.textContent = 'Thank you. Your story was sent for review before publication.';
+      storyForm.reset();
+      syncStoryName();
+    } catch (error) {
+      status.textContent = 'Choose how to share your story. Add your selected photo to the message after opening your email or WhatsApp.';
+      formActions(actions, { subject, body }, whatsapp);
+    } finally {
+      submit.disabled = false;
+    }
+  };
+
+  // Open trusted disability and epilepsy resources in the reading-room viewer.
+  const readingFrame = $('#readingFrame');
+  const readingStatus = $('#readingStatus');
+  const openReading = $('#openReading');
+  const defaultReadingUrl = new URL(readingFrame.src);
+  $$('[data-reading]').forEach(button => button.addEventListener('click', () => {
+    const url = new URL(button.dataset.reading);
+    if (!['https:', 'http:'].includes(url.protocol)
+      || (url.origin !== location.origin && url.protocol !== 'https:')) return;
+    readingFrame.src = url.href;
+    readingFrame.title = button.dataset.title;
+    const isLocalDocument = url.origin === location.origin && url.pathname.toLowerCase().endsWith('.pdf');
+    openReading.href = isLocalDocument ? defaultReadingUrl.href : url.href;
+    openReading.hidden = isLocalDocument;
+    openReading.textContent = isLocalDocument ? '' : 'Open official reading page';
+    readingStatus.textContent = `Reading: ${button.dataset.title}. If the publisher blocks the viewer, open the official reading page.`;
+  }));
 
   // Campaign poster filters (All / 2026 / 2025 / Other)
   const fb = $$('#campFilters button'), cps = $$('#campPosters .poster');

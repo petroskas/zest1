@@ -56,7 +56,7 @@ to:['Tonic seizure','Muscles suddenly become stiff, often in sleep or causing a 
 const demoStatus=$('#demoStatus');let demoDatasetOnline=false;
 async function loadDemoDataset(){
  try{
-  const response=await fetch('api/demos',{headers:{Accept:'application/json'}});
+  const response=await fetch('api/demos.php',{headers:{Accept:'application/json'}});
   if(!response.ok)throw new Error('Demo dataset request failed: '+response.status);
   const records=await response.json();
   if(!Array.isArray(records)||!records.length)throw new Error('The demo dataset is empty.');
@@ -69,26 +69,47 @@ async function loadDemoDataset(){
   });
   if(loaded.size!==Object.keys(D).length)throw new Error('The demo dataset is incomplete.');
   demoDatasetOnline=true;
-  demoStatus.textContent='Connected to the MySQL dataset. Selecting a demonstration records an anonymous total view count; no personal health information is collected.';
+  demoStatus.textContent='Seizure-aid guidance loaded.';
  }catch(error){
-  demoStatus.textContent='The Tomcat dataset is unavailable here. The six local, non-flashing illustrations remain available; view counts are not being saved.';
+  demoStatus.textContent='Built-in seizure-aid guidance is ready.';
  }
 }
 loadDemoDataset();
 async function recordDemoView(k){
  if(!demoDatasetOnline)return;
  try{
-  const response=await fetch('api/demos/'+encodeURIComponent(k)+'/views',{method:'POST',headers:{Accept:'application/json'}});
+  const response=await fetch('api/demos.php',{method:'POST',headers:{'Content-Type':'application/json',Accept:'application/json'},body:JSON.stringify({slug:k})});
   if(!response.ok)throw new Error('Demo view could not be saved: '+response.status);
   const result=await response.json();
   if(!result.ok||!Number.isSafeInteger(result.views))throw new Error('The demo view response was invalid.');
-  demoStatus.textContent='Connected to MySQL. '+(D[k][0])+': '+result.views+' anonymous total views; no personal health information is collected.';
+  demoStatus.textContent=D[k][0]+': '+result.views+' views.';
  }catch(error){
-  demoStatus.textContent='Could not save this demonstration view. The illustration remains available.';
+  demoStatus.textContent='Could not save this demonstration view. The video remains available.';
  }
 }
-function demo(k){const st=$('#stage');st.setAttribute('class','s-'+k);$('#demoTitle').textContent=D[k][0];$('#demoText').textContent=D[k][1];$$('#demoTabs button').forEach(b=>b.classList.toggle('on',b.dataset.demo===k));$('#demoRead').onclick=()=>say(D[k][0]+'. '+D[k][1]);if(S.audio)say(D[k][0]+'. '+D[k][1]);$('#stage').scrollIntoView({block:'nearest'})}
+const demoVideos={ab:'seizure-videos/2_absence_seizure.mp4',fa:'seizure-videos/3_focal_seizure.mp4',my:'seizure-videos/4_myoclonic_seizure.mp4',at:'seizure-videos/5_atonic_seizure.mp4',to:'seizure-videos/6_tonic_seizure.mp4'};
+const stage=$('#stage'),videoFallback=$('#demoVideoFallback');
+stage.addEventListener('error',()=>{videoFallback.textContent='This video could not be played. Try another seizure type or check your connection.';videoFallback.hidden=false});
+function demo(k,shouldScroll=true){
+ $('#demoTitle').textContent=D[k][0];$('#demoText').textContent=D[k][1];
+ $$('#demoTabs button').forEach(b=>b.classList.toggle('on',b.dataset.demo===k));
+ $('#demoRead').onclick=()=>say(D[k][0]+'. '+D[k][1]);
+ const source=demoVideos[k];
+ if(source){
+  stage.hidden=false;
+  videoFallback.hidden=true;videoFallback.textContent='';
+  if(stage.getAttribute('src')!==source){stage.src=source;stage.load()}
+  stage.play().catch(()=>{videoFallback.textContent='Autoplay was blocked. Press play to start the video.';videoFallback.hidden=false});
+ }else{
+  stage.pause();stage.hidden=true;stage.removeAttribute('src');stage.load();
+  videoFallback.textContent='A matching tonic-clonic video illustration is not available yet. Use the first-aid guidance above.';
+  videoFallback.hidden=false;
+ }
+ if(S.audio)say(D[k][0]+'. '+D[k][1]);
+ if(shouldScroll)stage.scrollIntoView({block:'nearest'});
+}
 $$('[data-demo]').forEach(b=>b.onclick=()=>{demo(b.dataset.demo);recordDemoView(b.dataset.demo)});
+demo('ab',false);
 // ---- learn tabs
 const lt=$$('#ltabs button'),lp=$$('.lpanel');lt.forEach(b=>b.onclick=()=>{lt.forEach(x=>x.classList.toggle('on',x===b));lp.forEach((p,i)=>p.classList.toggle('on',i==b.dataset.l));if(S.audio)say(lp[b.dataset.l].textContent)});
 // ---- diary
@@ -108,34 +129,56 @@ $('#jitsiBtn').onclick=function(){const j=$('#jitsi');j.hidden=false;this.hidden
 const sos=document.createElement('a');sos.id='sosBtn';sos.href='tel:+263784582491';sos.textContent='🆘 Help line';sos.setAttribute('aria-label','Call ZEST help line');document.body.append(sos);
 // ---- Chatbot
 const KB=[
-['epilepsy neurological condition what is','Epilepsy is a neurological condition of the brain in which a person has repeated seizures. Seizures are sudden bursts of abnormal electrical activity. It is not contagious and not caused by witchcraft.'],
-['first aid help seizing now what do i do','STAY with the person and time it. Keep them SAFE: clear hard objects and cushion the head. Do NOT restrain or put anything in the mouth. When shaking stops, turn them on their SIDE. Call an ambulance if it lasts over 5 minutes, repeats, they are hurt, or it is their first seizure.'],
-['types kinds tonic clonic absence focal myoclonic atonic','Common types: tonic-clonic (stiffening and jerking), absence (brief blank stare), focal (one area, may be aware or confused), myoclonic (sudden jerks), atonic (sudden drop), tonic (stiffening). See the Seizure types section for demos.'],
-['trigger triggers cause what causes','Triggers include missed medicine, lack of sleep, stress, illness or fever, alcohol, and for some people flashing lights. Causes include head injury, brain infections, stroke, tumours, genetics, and often no known cause.'],
-['myth witchcraft curse contagious catch touch','Myth: epilepsy is witchcraft or contagious. Fact: it is a treatable brain condition and you cannot catch it. Helping safely is always right.'],
-['spoon mouth tongue swallow','Never put anything in the mouth. A person cannot swallow their tongue. It can cause injury.'],
-['school child teacher classroom','At school: stay, time it, protect the head, turn the child on their side after shaking, let them rest, and never send them home alone. Share a care plan with the school.'],
-['work job employer employ','At work: keep people and machines away, do not restrain, allow rest, and make reasonable adjustments. Epilepsy is not a reason for dismissal.'],
-['home cook fire bath shower','At home: cushion the head, avoid open fires and boiling water near the person, prefer showers to baths, and keep bathroom doors unlocked.'],
-['medicine medication tablets stop treatment','Take medicine at the same time daily and never stop suddenly. Talk to your clinic about side effects. Most people can control seizures with medicine.'],
+['epilepsy neurological condition what is','Epilepsy is a neurological condition of the brain in which seizures keep recurring. A single seizure does not always mean epilepsy.'],
+['first aid help seizing now what do i do','Stay with the person and time the seizure. Cushion the head and clear nearby hazards. Do not restrain the person or put anything in their mouth. When shaking stops, turn them on their side if safe. Call emergency services if it lasts 5 minutes or more, repeats without recovery, causes injury or affects breathing.'],
+['types kinds tonic clonic absence focal myoclonic atonic','Seizure types include tonic-clonic, absence, focal, myoclonic, atonic and tonic. See the seizure types section for explanations and optional video illustrations.'],
+['trigger triggers cause what causes','Possible triggers include missed prescribed medicine, lack of sleep, illness or stress. Causes vary and are sometimes unknown. A clinician can discuss a person’s individual situation.'],
+['myth witchcraft curse contagious catch touch','Epilepsy is a neurological condition, not witchcraft and not contagious. Helping safely is always right.'],
+['spoon mouth tongue swallow','Never put anything in the mouth during a seizure. It can cause injury.'],
+['school child teacher classroom','At school, stay with the person, time the seizure, protect their head and let them rest afterwards. Share an agreed first-aid plan with the school.'],
+['work job employer employ','An inclusive workplace can provide reasonable adjustments, a calm recovery space and colleagues who know seizure first aid.'],
+['home cook fire bath shower','Reduce hazards around cooking and water, use showers rather than baths where possible, and follow an individual safety plan from a health professional.'],
+['medicine medication tablets stop treatment','Take prescribed medicine as directed. Do not change or stop it without first speaking with a qualified health professional.'],
+['disability rights accessibility accommodation inclusion','Disability rights include dignity, equal access, inclusion and reasonable accommodation. See the disability reading room for the Convention and Zimbabwean legal sources.'],
+['autism cerebral palsy deaf blind sign language','People with disabilities have different communication and support needs. Ask the person what works for them, communicate respectfully and provide appropriate accommodations.'],
 ['contact address phone whatsapp norton','ZEST: WhatsApp or call +263 784 582 491, email zimbabweepilepsysurvivorstrust@gmail.com, 11903 First Street, Norton. Use the Contact section or the map in the footer.'],
-['donate ecocash give','Dial *153*2*2*056028# on EcoCash or use the Donate section to record a pledge.'],
-['meeting video google meet online','Open the Video support section to host a Google Meet or join with a code, or start the in-page video room.'],
-['pregnant pregnancy women','Women with epilepsy can have healthy pregnancies. See a doctor before planning pregnancy because some medicines need changing. Do not stop medicine on your own.'],
-['driving drive','Driving rules vary. Most places require a seizure-free period and medical clearance. Ask your doctor.']];
+['donate ecocash give','Dial *153*2*2*056028# on EcoCash or use the Donate section.'],
+['meeting video google meet online','Open the Video support section to host or join a support session.']];
 const stopw=new Set('a an the is are of to in on for and or my me i you it what how do does can with about tell please'.split(' '));
 const tok=s=>s.toLowerCase().replace(/[^a-z0-9 ]/g,' ').split(/\s+/).filter(w=>w&&!stopw.has(w));
 function kbAnswer(q){const w=tok(q);let best=0,ans=null;KB.forEach(([k,a])=>{const kw=new Set(tok(k));const sc=w.reduce((n,x)=>n+(kw.has(x)?1:0),0);if(sc>best){best=sc;ans=a}});return best?ans:null}
-async function wiki(q){try{const s=await fetch('https://en.wikipedia.org/w/api.php?action=opensearch&format=json&origin=*&limit=1&search='+encodeURIComponent(q+' epilepsy'));const j=await s.json();if(!j[1][0])return null;const r=await fetch('https://en.wikipedia.org/api/rest_v1/page/summary/'+encodeURIComponent(j[1][0]));const d=await r.json();return d.extract?d.extract.slice(0,600)+' (Source: Wikipedia)':null}catch(e){return null}}
+const topicPattern=/epilep|seizure|\bfit(s)?\b|disabil|accessib|inclus|impair|deaf|blind|autis|cerebral palsy|down syndrome|sign language|assistive|reasonable accommodation|discrimination|crpd|persons with disabilities/i;
+function appendSources(sources){
+ if(!Array.isArray(sources)||!sources.length)return;
+ const wrap=document.createElement('div');wrap.className='chat-sources';wrap.append(document.createTextNode('Sources: '));
+ sources.slice(0,4).forEach((source,index)=>{
+  if(!source||typeof source.url!=='string')return;
+  let url;
+  try{url=new URL(source.url)}catch(error){return}
+  if(url.protocol!=='https:')return;
+  if(index)wrap.append(document.createTextNode(' · '));
+  const link=document.createElement('a');link.href=url.href;link.target='_blank';link.rel='noopener noreferrer';link.textContent=source.title||url.hostname;wrap.append(link);
+ });
+ if(wrap.childElementCount)log.append(wrap);
+}
 const chat=document.createElement('div');chat.id='chat';chat.hidden=true;chat.setAttribute('role','dialog');chat.setAttribute('aria-label','ZEST assistant');
-chat.innerHTML='<header><span>ZEST Epilepsy Assistant</span><button id="chatX" aria-label="Close chat" style="background:none;border:0;color:#fff;font-size:1.3rem">×</button></header><div id="chatLog" aria-live="polite"></div><form><button type="button" id="chatMic" aria-label="Speak your question">🎤</button><input id="chatIn" placeholder="Ask about epilepsy…" aria-label="Your question" maxlength="200"><button>Send</button></form>';
+chat.innerHTML='<header><span>ZEST Epilepsy &amp; Disability Assistant</span><button id="chatX" aria-label="Close chat" style="background:none;border:0;color:#fff;font-size:1.3rem">×</button></header><div id="chatLog" aria-live="polite"></div><form><button type="button" id="chatMic" aria-label="Speak your question">🎤</button><input id="chatIn" placeholder="Ask about epilepsy or disability…" aria-label="Your question" maxlength="500"><button>Send</button></form>';
 const cf=document.createElement('button');cf.id='chatFab';cf.setAttribute('aria-label','Open ZEST assistant (Alt+C)');cf.textContent='💬';document.body.append(chat,cf);
 const log=$('#chatLog');const add=(t,c)=>{const d=document.createElement('div');d.className='m '+c;d.textContent=t;log.append(d);log.scrollTop=log.scrollHeight;if(c==='b'&&S.audio)say(t)};
-function toggleChat(o){chat.hidden=o===true?false:!chat.hidden;if(!chat.hidden){$('#chatIn').focus();if(!log.children.length)add('Hello! I am the ZEST assistant. Ask me about seizures, first aid, triggers, school or work. I give general information only, not medical advice. In an emergency call your local ambulance.','b')}}
+function toggleChat(o){chat.hidden=o===true?false:!chat.hidden;if(!chat.hidden){$('#chatIn').focus();if(!log.children.length)add('Ask me about epilepsy, seizure first aid, disability rights or inclusion. I provide general information, not medical or legal advice. In an emergency call your local ambulance.','b')}}
 cf.onclick=()=>toggleChat();$('#chatX').onclick=()=>chat.hidden=true;
 $('#chat form').onsubmit=async e=>{e.preventDefault();const q=$('#chatIn').value.trim();if(!q)return;$('#chatIn').value='';add(q,'u');
- let a=kbAnswer(q);if(!a){add('Searching trusted sources…','b');a=await wiki(q)}
- add(a||'I am not sure. Please contact ZEST on WhatsApp +263 784 582 491 or ask a health professional.','b')};
+ if(!topicPattern.test(q)){add('I can only help with epilepsy, seizure first aid, disability, accessibility and inclusion. Please ask a question in one of these areas.','b');return}
+ add('Searching trusted sources…','b');const pending=log.lastElementChild;let answer=null,sources=[];
+ try{
+  const response=await fetch('api/chat.php',{method:'POST',headers:{'Content-Type':'application/json',Accept:'application/json'},body:JSON.stringify({question:q})});
+  if(response.ok){const result=await response.json();if(result.ok&&typeof result.answer==='string'){answer=result.answer;sources=result.sources||[]}}
+ }catch(error){answer=null}
+ pending.remove();
+ if(!answer)answer=kbAnswer(q)||'I could not find a reliable answer. Please ask a qualified health professional or visit the disability and epilepsy reading resources.';
+ answer=answer.replace(/people living with epilepsy/gi,'people with epilepsy').replace(/\bepilepsy is (?:a )?medical condition\b/gi,'Epilepsy is a neurological condition');
+  if(/\bepilepsy\b/i.test(answer)&&!/\bneurological condition\b/i.test(answer))answer='Epilepsy is a neurological condition. '+answer;
+  add(answer,'b');appendSources(sources)};
 $('#chatMic').onclick=()=>{const SR=window.SpeechRecognition||window.webkitSpeechRecognition;if(!SR)return add('Voice input is not supported in this browser.','b');const r=new SR();r.lang='en-GB';r.onresult=e=>{$('#chatIn').value=e.results[0][0].transcript;$('#chat form').requestSubmit()};r.start()};
 // ---- init
 apply();
