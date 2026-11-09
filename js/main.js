@@ -257,11 +257,13 @@
       || (url.origin !== location.origin && url.protocol !== 'https:')) return;
     readingFrame.src = url.href;
     readingFrame.title = button.dataset.title;
-    const isLocalDocument = url.origin === location.origin && url.pathname.toLowerCase().endsWith('.pdf');
+    const isLocalDocument = url.origin === location.origin && url.pathname.toLowerCase().endsWith('.html');
     openReading.href = isLocalDocument ? defaultReadingUrl.href : url.href;
     openReading.hidden = isLocalDocument;
     openReading.textContent = isLocalDocument ? '' : 'Open official reading page';
-    readingStatus.textContent = `Reading: ${button.dataset.title}. If the publisher blocks the viewer, open the official reading page.`;
+    readingStatus.textContent = isLocalDocument
+      ? `Reading ${button.dataset.title} within this page.`
+      : `Reading: ${button.dataset.title}. If the publisher blocks the viewer, open the official reading page.`;
   }));
 
   // Campaign poster filters (All / 2026 / 2025 / Other)
