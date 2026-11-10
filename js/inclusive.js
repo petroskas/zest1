@@ -15,7 +15,7 @@ pn.innerHTML=`<h3>Accessibility tools</h3><div class="a-row"><button data-a="big
 <div class="a-row"><button data-a="readpage">🔊 Read page</button><button data-a="stop">⏹ Stop</button><button data-a="voice">🎤 Voice commands</button></div>
 <div class="a-row"><label for="vl">Voice language</label><select id="vl"><option value="en-GB">English</option><option value="sn-ZW">Shona (if available)</option><option value="nd-ZW">Ndebele (if available)</option></select></div>
 <div class="a-row"><label for="vr">Speed</label><input type="range" id="vr" min=".6" max="1.6" step=".1" value="1"></div>
-<p class="small">Keys: Alt+M menu · Alt+A audio mode · Alt+R read page · Alt+S stop · Alt+C chat · Esc closes. Voice: say “go to first aid”, “read page”, “stop”, “high contrast”, “bigger text”, “help”.</p>`;
+<p class="small">Keys: Alt+M menu · Alt+A audio mode · Alt+R read page · Alt+S stop · Esc closes. Voice: say “go to first aid”, “read page”, “stop”, “high contrast” or “bigger text”.</p>`;
 document.body.append(fab,pn);
 const ruler=document.createElement('div');ruler.id='ruler';document.body.append(ruler);
 addEventListener('mousemove',e=>{if(S.ruler)ruler.style.top=(e.clientY-23)+'px'});
@@ -36,16 +36,16 @@ $('#vr',pn).oninput=e=>{S.rate=+e.target.value;save()};
 // auto-read on focus/hover/tap when audio mode on
 const label=el=>el.getAttribute('aria-label')||el.alt||el.textContent;
 document.addEventListener('focusin',e=>{if(S.audio&&!pn.contains(e.target))say(label(e.target))});
-document.addEventListener('click',e=>{if(!S.audio||pn.contains(e.target)||e.target.closest('#chat'))return;const t=e.target.closest('h1,h2,h3,p,li,a,button,img');if(t)say(label(t))});
+document.addEventListener('click',e=>{if(!S.audio||pn.contains(e.target))return;const t=e.target.closest('h1,h2,h3,p,li,a,button,img');if(t)say(label(t))});
 $$('[data-read]').forEach(b=>b.addEventListener('click',()=>say($(b.dataset.read).textContent.replace('Read this aloud','')))); 
-addEventListener('keydown',e=>{if(e.key==='Escape'){pn.hidden=true;stop();$('#chat').hidden=true}
- if(!e.altKey)return;const k=e.key.toLowerCase();if(k==='m')toggleMenu();if(k==='a')toggleAudio();if(k==='r')readPage();if(k==='s')stop();if(k==='c'){e.preventDefault();toggleChat()}});
+addEventListener('keydown',e=>{if(e.key==='Escape'){pn.hidden=true;stop()}
+ if(!e.altKey)return;const k=e.key.toLowerCase();if(k==='m')toggleMenu();if(k==='a')toggleAudio();if(k==='r')readPage();if(k==='s')stop()});
 // ---- voice commands
 let rec;function listen(){const SR=window.SpeechRecognition||window.webkitSpeechRecognition;if(!SR)return say('Voice commands are not supported in this browser. Try Chrome.');
  rec=new SR();rec.lang=voiceLang==='en-GB'?'en-GB':'en-ZW';rec.onresult=e=>cmd(e.results[0][0].transcript.toLowerCase());rec.onerror=()=>{};rec.start();say('Listening')}
 function cmd(t){const go={'first aid':'#firstaid','myth':'#myths','types':'#types','seizure types':'#types','triggers':'#learn','learn':'#learn','contact':'#contact','donate':'#donate','meeting':'#meet','video':'#meet','map':'#contact','services':'#services','news':'#news'};
  const k=Object.keys(go).find(x=>t.includes(x));
- if(t.includes('read'))readPage();else if(t.includes('stop'))stop();else if(t.includes('contrast')){S.contrast=!S.contrast;save();apply()}else if(t.includes('bigger')||t.includes('larger')){S.size=Math.min((S.size||100)+10,160);save();apply()}else if(t.includes('help')||t.includes('chat')){toggleChat(true)}else if(k){location.hash=go[k];say('Going to '+k)}else say('Sorry, I heard '+t)}
+ if(t.includes('read'))readPage();else if(t.includes('stop'))stop();else if(t.includes('contrast')){S.contrast=!S.contrast;save();apply()}else if(t.includes('bigger')||t.includes('larger')){S.size=Math.min((S.size||100)+10,160);save();apply()}else if(k){location.hash=go[k];say('Going to '+k)}else say('Sorry, I heard '+t)}
 // ---- seizure demos
 const D={tc:['Tonic-clonic seizure','The person loses awareness, the body stiffens then jerks for 1 to 3 minutes. Stay with them, time it, cushion the head, clear hard objects, never restrain or put anything in the mouth. When shaking stops, turn them on their side. Call an ambulance after 5 minutes.'],
 ab:['Absence seizure','A sudden blank stare for a few seconds. The person does not respond and then carries on. Stay calm, gently guide them away from danger and repeat what they missed.'],
@@ -127,59 +127,6 @@ $('#calLink').href='https://calendar.google.com/calendar/render?action=TEMPLATE&
 $('#jitsiBtn').onclick=function(){const j=$('#jitsi');j.hidden=false;this.hidden=true;j.innerHTML='<iframe title="ZEST video room" allow="camera;microphone;fullscreen;display-capture" style="width:100%;height:100%;border:0" src="https://meet.jit.si/ZEST-Zimbabwe-Epilepsy-Support-Room"></iframe>'};
 // ---- SOS
 const sos=document.createElement('a');sos.id='sosBtn';sos.href='tel:+263784582491';sos.textContent='🆘 Help line';sos.setAttribute('aria-label','Call ZEST help line');document.body.append(sos);
-// ---- Chatbot
-const KB=[
-['epilepsy neurological condition what is','Epilepsy is a neurological condition of the brain in which seizures keep recurring. A single seizure does not always mean epilepsy.'],
-['first aid help seizing now what do i do','Stay with the person and time the seizure. Cushion the head and clear nearby hazards. Do not restrain the person or put anything in their mouth. When shaking stops, turn them on their side if safe. Call emergency services if it lasts 5 minutes or more, repeats without recovery, causes injury or affects breathing.'],
-['types kinds tonic clonic absence focal myoclonic atonic','Seizure types include tonic-clonic, absence, focal, myoclonic, atonic and tonic. See the seizure types section for explanations and optional video illustrations.'],
-['trigger triggers cause what causes','Possible triggers include missed prescribed medicine, lack of sleep, illness or stress. Causes vary and are sometimes unknown. A clinician can discuss a person’s individual situation.'],
-['myth witchcraft curse contagious catch touch','Epilepsy is a neurological condition, not witchcraft and not contagious. Helping safely is always right.'],
-['spoon mouth tongue swallow','Never put anything in the mouth during a seizure. It can cause injury.'],
-['school child teacher classroom','At school, stay with the person, time the seizure, protect their head and let them rest afterwards. Share an agreed first-aid plan with the school.'],
-['work job employer employ','An inclusive workplace can provide reasonable adjustments, a calm recovery space and colleagues who know seizure first aid.'],
-['home cook fire bath shower','Reduce hazards around cooking and water, use showers rather than baths where possible, and follow an individual safety plan from a health professional.'],
-['medicine medication tablets stop treatment','Take prescribed medicine as directed. Do not change or stop it without first speaking with a qualified health professional.'],
-['disability rights accessibility accommodation inclusion','Disability rights include dignity, equal access, inclusion and reasonable accommodation. See the disability reading room for the Convention and Zimbabwean legal sources.'],
-['autism cerebral palsy deaf blind sign language','People with disabilities have different communication and support needs. Ask the person what works for them, communicate respectfully and provide appropriate accommodations.'],
-['contact address phone whatsapp norton','ZEST: WhatsApp or call +263 784 582 491, email zimbabweepilepsysurvivorstrust@gmail.com, 11903 First Street, Norton. Use the Contact section or the map in the footer.'],
-['donate ecocash give','Dial *153*2*2*056028# on EcoCash or use the Donate section.'],
-['meeting video google meet online','Open the Video support section to host or join a support session.']];
-const stopw=new Set('a an the is are of to in on for and or my me i you it what how do does can with about tell please'.split(' '));
-const tok=s=>s.toLowerCase().replace(/[^a-z0-9 ]/g,' ').split(/\s+/).filter(w=>w&&!stopw.has(w));
-function kbAnswer(q){const w=tok(q);let best=0,ans=null;KB.forEach(([k,a])=>{const kw=new Set(tok(k));const sc=w.reduce((n,x)=>n+(kw.has(x)?1:0),0);if(sc>best){best=sc;ans=a}});return best?ans:null}
-const topicPattern=/epilep|seizure|\bfit(s)?\b|disabil|accessib|inclus|impair|deaf|blind|autis|cerebral palsy|down syndrome|sign language|assistive|reasonable accommodation|discrimination|crpd|persons with disabilities/i;
-function appendSources(sources){
- if(!Array.isArray(sources)||!sources.length)return;
- const wrap=document.createElement('div');wrap.className='chat-sources';wrap.append(document.createTextNode('Sources: '));
- sources.slice(0,4).forEach((source,index)=>{
-  if(!source||typeof source.url!=='string')return;
-  let url;
-  try{url=new URL(source.url)}catch(error){return}
-  if(url.protocol!=='https:')return;
-  if(index)wrap.append(document.createTextNode(' · '));
-  const link=document.createElement('a');link.href=url.href;link.target='_blank';link.rel='noopener noreferrer';link.textContent=source.title||url.hostname;wrap.append(link);
- });
- if(wrap.childElementCount)log.append(wrap);
-}
-const chat=document.createElement('div');chat.id='chat';chat.hidden=true;chat.setAttribute('role','dialog');chat.setAttribute('aria-label','ZEST assistant');
-chat.innerHTML='<header><span>ZEST Epilepsy &amp; Disability Assistant</span><button id="chatX" aria-label="Close chat" style="background:none;border:0;color:#fff;font-size:1.3rem">×</button></header><div id="chatLog" aria-live="polite"></div><form><button type="button" id="chatMic" aria-label="Speak your question">🎤</button><input id="chatIn" placeholder="Ask about epilepsy or disability…" aria-label="Your question" maxlength="500"><button>Send</button></form>';
-const cf=document.createElement('button');cf.id='chatFab';cf.setAttribute('aria-label','Open ZEST assistant (Alt+C)');cf.textContent='💬';document.body.append(chat,cf);
-const log=$('#chatLog');const add=(t,c)=>{const d=document.createElement('div');d.className='m '+c;d.textContent=t;log.append(d);log.scrollTop=log.scrollHeight;if(c==='b'&&S.audio)say(t)};
-function toggleChat(o){chat.hidden=o===true?false:!chat.hidden;if(!chat.hidden){$('#chatIn').focus();if(!log.children.length)add('Ask me about epilepsy, seizure first aid, disability rights or inclusion. I provide general information, not medical or legal advice. In an emergency call your local ambulance.','b')}}
-cf.onclick=()=>toggleChat();$('#chatX').onclick=()=>chat.hidden=true;
-$('#chat form').onsubmit=async e=>{e.preventDefault();const q=$('#chatIn').value.trim();if(!q)return;$('#chatIn').value='';add(q,'u');
- if(!topicPattern.test(q)){add('I can only help with epilepsy, seizure first aid, disability, accessibility and inclusion. Please ask a question in one of these areas.','b');return}
- add('Searching trusted sources…','b');const pending=log.lastElementChild;let answer=null,sources=[];
- try{
-  const response=await fetch('api/chat.php',{method:'POST',headers:{'Content-Type':'application/json',Accept:'application/json'},body:JSON.stringify({question:q})});
-  if(response.ok){const result=await response.json();if(result.ok&&typeof result.answer==='string'){answer=result.answer;sources=result.sources||[]}}
- }catch(error){answer=null}
- pending.remove();
- if(!answer)answer=kbAnswer(q)||'I could not find a reliable answer. Please ask a qualified health professional or visit the disability and epilepsy reading resources.';
- answer=answer.replace(/people living with epilepsy/gi,'people with epilepsy').replace(/\bepilepsy is (?:a )?medical condition\b/gi,'Epilepsy is a neurological condition');
-  if(/\bepilepsy\b/i.test(answer)&&!/\bneurological condition\b/i.test(answer))answer='Epilepsy is a neurological condition. '+answer;
-  add(answer,'b');appendSources(sources)};
-$('#chatMic').onclick=()=>{const SR=window.SpeechRecognition||window.webkitSpeechRecognition;if(!SR)return add('Voice input is not supported in this browser.','b');const r=new SR();r.lang='en-GB';r.onresult=e=>{$('#chatIn').value=e.results[0][0].transcript;$('#chat form').requestSubmit()};r.start()};
 // ---- init
 apply();
 if(!S.seen){S.seen=1;save();const w=document.createElement('div');w.className='calm';w.style.cssText='position:fixed;top:10px;left:50%;transform:translateX(-50%);z-index:10000;max-width:92vw';w.setAttribute('role','alert');w.innerHTML='Blind or low vision? Press <b>Alt+A</b> for audio mode, or <b>Alt+M</b> for accessibility tools. <button class="btn btn-gold" style="padding:4px 12px">OK</button>';w.querySelector('button').onclick=()=>w.remove();document.body.append(w);setTimeout(()=>w.remove(),15000)}

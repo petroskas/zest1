@@ -246,25 +246,22 @@
     }
   };
 
-  // Open trusted disability and epilepsy resources in the reading-room viewer.
+  // Keep reading-room documents inside the current ZEST installation.
   const readingFrame = $('#readingFrame');
   const readingStatus = $('#readingStatus');
-  const openReading = $('#openReading');
-  const defaultReadingUrl = new URL(readingFrame.src);
-  $$('[data-reading]').forEach(button => button.addEventListener('click', () => {
-    const url = new URL(button.dataset.reading);
-    if (!['https:', 'http:'].includes(url.protocol)
-      || (url.origin !== location.origin && url.protocol !== 'https:')) return;
-    readingFrame.src = url.href;
-    readingFrame.title = button.dataset.title;
-    const isLocalDocument = url.origin === location.origin && url.pathname.toLowerCase().endsWith('.html');
-    openReading.href = isLocalDocument ? defaultReadingUrl.href : url.href;
-    openReading.hidden = isLocalDocument;
-    openReading.textContent = isLocalDocument ? '' : 'Open official reading page';
-    readingStatus.textContent = isLocalDocument
-      ? `Reading ${button.dataset.title} in this page-by-page document viewer.`
-      : `Reading: ${button.dataset.title}. If the publisher blocks the viewer, open the official reading page.`;
-  }));
+  if (readingFrame && readingStatus) {
+    const localDocumentsPath = new URL('documents/', document.baseURI);
+    $$('[data-reading]').forEach(button => button.addEventListener('click', () => {
+      const url = new URL(button.dataset.reading, document.baseURI);
+      if (url.origin !== location.origin || !url.pathname.startsWith(localDocumentsPath.pathname)) {
+        readingStatus.textContent = 'This reading material is unavailable within the ZEST project.';
+        return;
+      }
+      readingFrame.src = url.href;
+      readingFrame.title = button.dataset.title || 'ZEST reading material';
+      readingStatus.textContent = `Now reading: ${readingFrame.title}.`;
+    }));
+  }
 
   // Campaign poster filters (All / 2026 / 2025 / Other)
   const fb = $$('#campFilters button'), cps = $$('#campPosters .poster');

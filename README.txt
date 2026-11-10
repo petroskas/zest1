@@ -8,8 +8,6 @@ GITHUB PAGES
 - GitHub Pages serves static files only. JavaScript uses email/WhatsApp actions
   for contact and story submissions when PHP is unavailable; PHP and MySQL are
   needed to store submissions and demonstration counts in the database.
-- Gemini answers require a private server-side API key; static pages continue
-  to provide built-in answers to common epilepsy and disability questions.
 
 LOCAL OR PHP-CAPABLE WEBSITE (XAMPP)
 1. Copy the project to C:\xampp\htdocs\zest1.
@@ -29,16 +27,6 @@ On a PHP-capable host other than XAMPP, set ZEST_DB_HOST, ZEST_DB_NAME,
 ZEST_DB_USER and ZEST_DB_PASSWORD in the server environment. Do not commit
 production database credentials.
 
-GEMINI AND GOOGLE SEARCH
-- The chatbot sends epilepsy and disability questions to the PHP server, which
-  calls Gemini with Google Search grounding and returns source links.
-- Create a Gemini API key in Google AI Studio. Set GEMINI_API_KEY in the web
-  server's environment and restart Apache; optionally set GEMINI_MODEL. For a
-  local XAMPP setup, configure SetEnv in a local Apache configuration file.
-  Never put the key in JavaScript, HTML, GitHub Pages or a committed .env file.
-- Without a configured key or PHP backend, the assistant uses its built-in
-  epilepsy and disability FAQ. It declines unrelated topics.
-
 DATASET AND DEMONSTRATIONS
 - The six-row educational dataset is available in data\seizure-demos.csv.
 - database\schema.sql installs the same records into seizure_demos and creates
@@ -52,16 +40,14 @@ DATASET AND DEMONSTRATIONS
 - Videos and first-aid tips are general education, not diagnosis or a substitute
   for advice from a qualified health professional.
 
-ONLINE READING
-- The disability reading room embeds public source pages where the publishers
-  allow it and provides a link to read online if embedding is blocked.
+READING ROOM
+- The two reading-room buttons open local document pages inside the ZEST site;
+  they do not open external publishers or navigate away from the project.
 - Zimbabwe's supplied policy and Act are displayed one page at a time as
-  document-style HTML views. Browser-readable pages avoid requiring Word or a
-  PDF viewer. Text can still be selected, copied or captured in a screenshot.
+  document-style HTML views.
 
 GITHUB DEPLOYMENT
 - Push commits to main to publish the static site on GitHub Pages.
 - GitHub Pages cannot run PHP or MySQL. Point a PHP-capable domain to this
-  project to enable database storage and Gemini; use the static email/WhatsApp
-  fallbacks on GitHub Pages.
-- No database password or Gemini API key is included in the repository.
+  project to enable database storage; use the static email/WhatsApp fallbacks
+  on GitHub Pages.
