@@ -31,10 +31,10 @@ DATASET AND DEMONSTRATIONS
 - The six-row educational dataset is available in data\seizure-demos.csv.
 - database\schema.sql installs the same records into seizure_demos and creates
   seizure_demo_stats for aggregate view totals.
-- documents\ contains the supplied Zimbabwe National Disability Policy (2021)
-  and Persons with Disabilities Act (2025) as responsive, page-by-page HTML
-  document readers embedded in the reading room. The original PDFs are not
-  published, avoiding browser behavior that downloads them instead of opening.
+- documents\ contains page images rendered from the supplied Zimbabwe National
+  Disability Policy (2021) and Persons with Disabilities Act (2025) PDFs.
+  Readers load a selected page image at a time; the source PDFs are excluded
+  from GitHub Pages deployment and direct PDF access is blocked on Apache.
 - Supplied MP4 illustrations appear under their corresponding seizure types.
 - All videos require an explicit play action and use responsive HTML5 controls.
 - Videos and first-aid tips are general education, not diagnosis or a substitute
@@ -43,8 +43,8 @@ DATASET AND DEMONSTRATIONS
 READING ROOM
 - The two reading-room buttons open local document pages inside the ZEST site;
   they do not open external publishers or navigate away from the project.
-- Zimbabwe's supplied policy and Act are displayed one page at a time as
-  document-style HTML views.
+- Zimbabwe's supplied Policy and Act are displayed one original page image at a
+  time, retaining the documents' printed layout.
 
 GITHUB DEPLOYMENT
 - Push commits to main to publish the static site on GitHub Pages.

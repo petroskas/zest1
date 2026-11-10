@@ -1,0 +1,5 @@
+Options -Indexes
+
+<FilesMatch "(?i)\.pdf$">
+  Require all denied
+</FilesMatch>
