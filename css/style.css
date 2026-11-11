@@ -81,6 +81,12 @@ h2{font-size:clamp(1.8rem,3.5vw,2.7rem);margin-bottom:.6em}
 .qcard:hover{transform:translateY(-6px);border-color:var(--p2)}
 .qcard .ico{font-size:1.8rem}.qcard h3{font-size:1.15rem;margin:8px 0 4px}.qcard p{color:var(--muted);font-size:.92rem}
 
+.front-campaign{margin-top:42px}
+.front-campaign-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px;align-items:start}
+.front-campaign-card{margin:0;padding:16px;border:1px solid var(--line);border-radius:var(--r);background:var(--card);box-shadow:var(--shadow)}
+.front-campaign-card img{display:block;width:100%;height:auto;border-radius:calc(var(--r) - 8px)}
+.front-campaign-card figcaption{padding:12px 4px 2px;color:var(--muted);font-weight:600;text-align:center}
+
 .section{padding:100px 0}.tint{background:var(--tint)}
 .center{text-align:center;max-width:720px;margin:0 auto 50px}
 .small{font-size:.82rem;color:var(--muted);text-align:center;margin-top:20px}
@@ -220,6 +226,7 @@ cite{display:block;margin-top:18px;color:var(--muted)}
 }
 @media(max-width:600px){
   .quick,.stats,.flips,.grid3,.foot-grid{grid-template-columns:1fr}
+  .front-campaign-grid{grid-template-columns:1fr}
   .section{padding:70px 0}.hero-in{padding:60px 0 110px}.brand-text small{display:none}
 }
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.reveal{opacity:1;transform:none}}
